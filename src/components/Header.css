@@ -48,7 +48,7 @@
 .site-menu {
   position: absolute;
   top: 100%;
-  inset-inline-start: 16px;
+  left: 16px;
   display: grid;
   min-width: 230px;
   padding: 8px;
