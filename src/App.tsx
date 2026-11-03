@@ -16,6 +16,7 @@ import {
   sortRecommendations,
   type EnrichedRecommendation,
 } from './utils/recommendations'
+import { photos } from './data/photos'
 import {
   excludeCountries,
   filterCountriesByRegion,
@@ -118,6 +119,29 @@ function RecommendationCard({
   )
 }
 
+function TravelPhotoCard({
+  photo,
+}: {
+  photo: (typeof photos)[number]
+}) {
+  return (
+    <figure className="travel-photo-card">
+      <div
+        aria-label={`${photo.title}, ${photo.location}`}
+        className="travel-photo-placeholder"
+        role="img"
+        style={{ background: photo.background }}
+      >
+        <span aria-hidden="true">✦</span>
+      </div>
+      <figcaption>
+        <strong>{photo.title}</strong>
+        <span>{photo.location}</span>
+      </figcaption>
+    </figure>
+  )
+}
+
 function HomePage({
   countries,
   isLoading,
@@ -182,9 +206,80 @@ function HomePage({
 
   return (
     <main className="countries-page" dir="rtl">
+      <section aria-labelledby="home-title" className="home-hero">
+        <svg
+          aria-labelledby="travel-logo-title"
+          className="travel-logo"
+          role="img"
+          viewBox="0 0 240 210"
+        >
+          <title id="travel-logo-title">כדור ארץ עם מסלול טיסה</title>
+          <defs>
+            <linearGradient id="globe-gradient" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stopColor="#78c5e8" />
+              <stop offset="100%" stopColor="#1769aa" />
+            </linearGradient>
+          </defs>
+          <circle
+            cx="120"
+            cy="112"
+            r="61"
+            fill="url(#globe-gradient)"
+            stroke="#124f7d"
+            strokeWidth="3"
+          />
+          <path
+            d="M92 65 108 70 114 82 106 91 94 88 86 99 72 92 70 79ZM122 62 142 67 152 81 145 91 131 88 123 99 112 89ZM116 103 132 98 144 106 140 119 148 132 135 151 126 165 117 151 119 135 108 124Z"
+            fill="#f3fbff"
+            opacity=".95"
+          />
+          <path
+            d="M27 105C44 30 157 19 203 77c18 23 9 54-7 77"
+            fill="none"
+            stroke="#1769aa"
+            strokeDasharray="5 8"
+            strokeLinecap="round"
+            strokeWidth="3"
+          />
+          <path
+            d="m187 147 16 8-11 13-1-8-8-3Z"
+            fill="#1769aa"
+            transform="rotate(-25 190 158)"
+          />
+          <path
+            d="m188 149 18-21-3 15 13 7-25 3-9 12Z"
+            fill="#f08b45"
+            stroke="#fff"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+          <circle cx="120" cy="112" r="73" fill="none" stroke="#d4eaf6" strokeWidth="2" />
+        </svg>
+        <h1 id="home-title">Been There, Done That</h1>
+        <p className="home-tagline">המלצות זהב מאחת שהייתה שם</p>
+        <p className="home-intro">
+          היי, אני עדן, ואני אוהבת לגלות מקומות חדשים ולשמור את כל הפינות
+          המיוחדות שמצאתי בדרך. כאן ריכזתי המלצות אישיות מהטיולים שלי.
+        </p>
+      </section>
+
+      <section aria-label="תמונות מהטיולים" className="photo-strip">
+        <div className="photo-strip-track">
+          {[...photos, ...photos].map((photo, index) => (
+            <div
+              aria-hidden={index >= photos.length}
+              className="photo-strip-item"
+              key={`${photo.id}-${index}`}
+            >
+              <TravelPhotoCard photo={photo} />
+            </div>
+          ))}
+        </div>
+      </section>
+
       <header className="page-heading">
-        <p className="eyebrow">Been There, Done That</p>
-        <h1>מדינות העולם</h1>
+        <p className="eyebrow">סביב העולם</p>
+        <h2 className="countries-page-title">מדינות העולם</h2>
         <p className="page-description">גלו את המדינות והיעדים שמחכים לכם</p>
       </header>
 
@@ -576,6 +671,23 @@ function RecommendationsPage({ countries }: { countries: Country[] }) {
   )
 }
 
+function GalleryPage() {
+  return (
+    <main className="simple-page gallery-page" dir="rtl">
+      <header className="page-heading">
+        <p className="eyebrow">Been There, Done That</p>
+        <h1>תמונות מהדרך</h1>
+        <p className="page-description">רגעים ומקומות מהטיולים שלי</p>
+      </header>
+      <div className="gallery-grid">
+        {photos.map((photo) => (
+          <TravelPhotoCard key={photo.id} photo={photo} />
+        ))}
+      </div>
+    </main>
+  )
+}
+
 function App() {
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -654,7 +766,7 @@ function App() {
           element={<RecommendationsPage countries={countries} />}
         />
         <Route path="/about" element={<SimplePage title="אודות הפרויקט" />} />
-        <Route path="/gallery" element={<SimplePage title="תמונות" />} />
+        <Route path="/gallery" element={<GalleryPage />} />
       </Routes>
     </>
   )

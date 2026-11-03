@@ -24,9 +24,130 @@
   letter-spacing: -0.04em;
 }
 
+.countries-page-title {
+  margin: 0;
+  color: var(--text-h);
+  font-family: var(--heading);
+  font-size: clamp(36px, 7vw, 56px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
 .page-description {
   margin-top: 12px;
   color: var(--text);
+}
+
+.home-hero {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.travel-logo {
+  width: min(250px, 68vw);
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.home-hero h1 {
+  margin: 0;
+  font-size: clamp(32px, 6vw, 52px);
+  letter-spacing: -0.035em;
+}
+
+.home-tagline {
+  color: var(--accent);
+  font-size: clamp(19px, 3vw, 24px);
+  font-weight: 600;
+}
+
+.home-intro {
+  max-width: 620px;
+  margin-top: 4px;
+  line-height: 1.8;
+}
+
+.photo-strip {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0 calc(50% - 50vw) 64px;
+  overflow: hidden;
+  direction: ltr;
+}
+
+.photo-strip-track {
+  display: flex;
+  width: max-content;
+  animation: travel-strip-scroll 72s linear infinite;
+}
+
+.photo-strip:hover .photo-strip-track {
+  animation-play-state: paused;
+}
+
+.photo-strip-item {
+  flex: 0 0 280px;
+  padding: 0 8px;
+}
+
+.travel-photo-card {
+  width: 280px;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: start;
+}
+
+.travel-photo-placeholder {
+  display: grid;
+  width: 280px;
+  height: 290px;
+  place-items: center;
+  border-radius: 17px;
+  color: rgb(255 255 255 / 88%);
+  font-size: 58px;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 25%);
+}
+
+.travel-photo-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  color: var(--text-h);
+  font-size: 14px;
+}
+
+.travel-photo-card figcaption span {
+  color: var(--text);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.gallery-grid .travel-photo-card,
+.gallery-grid .travel-photo-placeholder {
+  width: 100%;
+}
+
+.gallery-grid .travel-photo-placeholder {
+  height: auto;
+  aspect-ratio: 28 / 29;
+}
+
+@keyframes travel-strip-scroll {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .world-section {
@@ -494,6 +615,14 @@
     padding: 24px 16px;
   }
 
+  .home-hero {
+    margin-bottom: 28px;
+  }
+
+  .photo-strip {
+    margin-bottom: 48px;
+  }
+
   .featured-recommendations {
     margin-bottom: 48px;
   }
@@ -535,6 +664,10 @@
   .country-card,
   .world-button {
     transition: none;
+  }
+
+  .photo-strip-track {
+    animation: none;
   }
 
   .country-card:hover {
