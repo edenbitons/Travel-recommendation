@@ -2,7 +2,7 @@
 
 כלל העבודה: משימה אחת בכל פעם. אחרי כל משימה: `npm test`, בדיקה בדפדפן ו-commit.
 
-- [ ] **1. טיפוסים ונתונים מקומיים**
+- [x] **1. טיפוסים ונתונים מקומיים**
   יוצרים את `src/types.ts` עם `Country`, `Destination` ו-`Recommendation` (כולל `googleRating` ו-`mustGo`), ואת `src/data/recommendations.ts` עם 3 המלצות לדוגמה. דף הבית מציג רשימת מדינות מקובץ JSON מקומי, עדיין בלי API.
   Done when: הרשימה המקומית מוצגת, ו-`npm run build` עובר בלי שגיאות.
 

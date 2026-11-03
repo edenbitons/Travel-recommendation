@@ -12,3 +12,10 @@
 הקמתי את Vite בעצמי (React + TypeScript, ESLint). ההתקנה נכשלה בגלל התנגשות גרסאות בין TypeScript 7 ל-ESLint, ותיקנתי ל-TypeScript 6.
 **בדקתי:** `npm run dev` עובד, ודף הדוגמה של Vite נפתח בדפדפן.
 
+
+**15:10 · copilot**
+
+> בוא נעשה את משימה 1 מ-tasks.md. קרא קודם את PRD.md ו-tasks.md.
+> קובץ ההמלצות המלא כבר קיים ב-src/data/recommendations.ts (עם הטיפוסים Destination ו-Recommendation) – אל תשנה אותו.
+> צור את src/types.ts עם interface בשם Country, וקובץ JSON מקומי עם 5 מדינות לדוגמה. דף הבית יציג אותן ככרטיסים עם דגל ושם (בלי API עדיין).
+> הצג תוכנית קצרה לפני שאתה כותב קוד.
