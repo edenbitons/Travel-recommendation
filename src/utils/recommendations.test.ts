@@ -6,7 +6,11 @@ import {
   getRecommendationStats,
   sortRecommendations,
 } from './recommendations'
-import type { Recommendation } from '../data/recommendations'
+import {
+  destinations,
+  recommendations,
+  type Recommendation,
+} from '../data/recommendations'
 
 const sampleRecommendations: Recommendation[] = [
   {
@@ -44,6 +48,33 @@ describe('getMapsUrl', () => {
     const url = new URL(getMapsUrl('קפה', 'New York'))
 
     expect(url.searchParams.get('query')).toBe('קפה New York')
+  })
+
+  it('creates a valid destination query for all 113 recommendations', () => {
+    expect(recommendations).toHaveLength(113)
+
+    for (const recommendation of recommendations) {
+      const destination = destinations.find(
+        (item) => item.id === recommendation.destinationId,
+      )
+
+      expect(destination).toBeDefined()
+      if (!destination) {
+        continue
+      }
+
+      const url = new URL(
+        getMapsUrl(recommendation.name, destination.nameEn),
+      )
+
+      expect(url.origin + url.pathname).toBe(
+        'https://www.google.com/maps/search/',
+      )
+      expect(url.searchParams.get('api')).toBe('1')
+      expect(url.searchParams.get('query')).toBe(
+        `${recommendation.name} ${destination.nameEn}`,
+      )
+    }
   })
 })
 

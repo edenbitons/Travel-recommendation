@@ -102,7 +102,7 @@ export const photos: TravelPhoto[] = [
   {
     id: 'koh-phangan-road',
     title: 'על הקטנוע',
-    location: 'קופנגן',
+    location: 'קו טאו',
     src: '/photos/koh-phangan-road.jpg',
     type: 'image',
     background: '#3f7a3a',

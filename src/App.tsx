@@ -6,6 +6,7 @@ import {
   CATEGORY_LABELS,
   countryIntros,
   destinations,
+  recommendations,
   type Category,
 } from './data/recommendations'
 import {
@@ -41,6 +42,12 @@ const REGION_LABELS: Record<string, string> = {
 }
 
 const RECOMMENDATION_CATEGORIES = Object.keys(CATEGORY_LABELS) as Category[]
+const recommendationDestinationIds = new Set(
+  recommendations.map((recommendation) => recommendation.destinationId),
+)
+const destinationsWithRecommendations = destinations.filter((destination) =>
+  recommendationDestinationIds.has(destination.id),
+)
 
 function CountriesStatus({
   isLoading,
@@ -127,14 +134,26 @@ function TravelPhotoCard({
 }) {
   return (
     <figure className="travel-photo-card">
-      <div
-        aria-label={`${photo.title}, ${photo.location}`}
-        className="travel-photo-placeholder"
-        role="img"
-        style={{ background: photo.background }}
-      >
-        <span aria-hidden="true">✦</span>
-      </div>
+      {photo.type === 'image' ? (
+        <img
+          alt={photo.title}
+          className="travel-photo-media"
+          loading="lazy"
+          src={photo.src}
+          style={{ backgroundColor: photo.background }}
+        />
+      ) : (
+        <video
+          aria-label={photo.title}
+          autoPlay
+          className="travel-photo-media"
+          loop
+          muted
+          playsInline
+          src={photo.src}
+          style={{ backgroundColor: photo.background }}
+        />
+      )}
       <figcaption>
         <strong>{photo.title}</strong>
         <span>{photo.location}</span>
@@ -142,6 +161,14 @@ function TravelPhotoCard({
     </figure>
   )
 }
+
+const homeIntroduction = [
+  'אם אתם מתכננים טיול ונמאס לכם לחפש המלצות כל היום – הגעתם למקום הנכון.',
+  'אני עדן. אחרי עשר שנים של שירות אינטנסיבי, יצאתי לשנתיים של חופש.',
+  'הבטחתי לעצמי שבשנתיים האלה אנצל כל רגע ואבקר בכל מקום שחלמתי להיות בו.',
+  'רציתי שכל טיול יהיה מושלם, שלא אפספס אף מסעדה שווה ואף אטרקציה – אז חקרתי וחקרתי וחקרתי, וגיליתי שהרבה המלצות כבר ישנות ולא רלוונטיות.',
+  'אז אני כאן כדי לגלות לכם את ההמלצות הכי שוות לטיול הבא שלכם!',
+]
 
 function HomePage({
   countries,
@@ -164,7 +191,12 @@ function HomePage({
     [countries],
   )
   const recommendedCountryCodes = useMemo(
-    () => new Set(destinations.map((destination) => destination.countryCode)),
+    () =>
+      new Set(
+        destinationsWithRecommendations.map(
+          (destination) => destination.countryCode,
+        ),
+      ),
     [],
   )
   const visibleCountries = useMemo(() => {
@@ -178,7 +210,10 @@ function HomePage({
       selectedRegion,
     )
     const matchingRecommendations = onlyRecommended
-      ? filterCountriesWithRecommendations(matchingRegion, destinations)
+      ? filterCountriesWithRecommendations(
+          matchingRegion,
+          destinationsWithRecommendations,
+        )
       : matchingRegion
 
     return sortCountriesByName(matchingRecommendations)
@@ -259,8 +294,9 @@ function HomePage({
         <h1 id="home-title">Been There, Done That</h1>
         <p className="home-tagline">המלצות זהב מאחת שהייתה שם</p>
         <p className="home-intro">
-          היי, אני עדן, ואני אוהבת לגלות מקומות חדשים ולשמור את כל הפינות
-          המיוחדות שמצאתי בדרך. כאן ריכזתי המלצות אישיות מהטיולים שלי.
+          {homeIntroduction.map((sentence) => (
+            <span key={sentence}>{sentence}</span>
+          ))}
         </p>
       </section>
 

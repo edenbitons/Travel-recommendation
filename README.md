@@ -1,75 +1,63 @@
-# React + TypeScript + Vite
+# Been There, Done That ✈️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> המלצות זהב מאחת שהייתה שם
 
-Currently, two official plugins are available:
+בלוג טיולים אישי: מידע על כל מדינות העולם, יחד עם ההמלצות האישיות שלי (מסעדות, מלונות, קניות ואטרקציות) מ-10 יעדים שטיילתי בהם בעצמי.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+פרויקט גמר בקורס פיתוח WEB (4255).
 
-## React Compiler
+## מה יש באתר
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| עמוד | כתובת | מה רואים |
+|---|---|---|
+| בית | `/` | לוגו, כמה מילים עליי, סרט תמונות נע, המלצות נבחרות, ורשימת כל המדינות עם חיפוש, סינון לפי יבשת ו"רק עם המלצות" |
+| עמוד מדינה | `/countries/:code` | נתוני המדינה (דגל, בירה, מטבע, שפה, שטח), ומתחת ההמלצות שלי לפי יעד |
+| המלצות מאחת שיודעת | `/recommendations` | כל ההמלצות, עם סינון לפי קטגוריה. "חובה" מופיעות ראשונות, ואחריהן לפי דירוג גוגל |
+| אודות הפרויקט | `/about` | מה האתר, ממה הוא בנוי, וסטטיסטיקה שמחושבת מהנתונים |
+| תמונות | `/gallery` | התמונות שלי מהטיולים |
 
-## Expanding the ESLint configuration
+## הרצה
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev        # האתר ב-http://localhost:5173
+npm test           # בדיקות Vitest
+npm run test:ui    # הבדיקות בממשק דפדפן
+npm run build      # בנייה לגרסה סופית
+npm run lint       # בדיקת קוד עם ESLint
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+ב-Windows PowerShell, אם `npm` נחסם, משתמשים ב-`npm.cmd` (למשל `npm.cmd run dev`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## מקורות מידע
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **רשימת המדינות:** מאגר [mledoze/countries](https://github.com/mledoze/countries) דרך jsDelivr. הוא ציבורי, חינמי ובלי מפתח.
+  `https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json`
+- **דגלים:** [FlagCDN](https://flagcdn.com), גם הוא בלי מפתח.
+- **ההמלצות:** הקובץ `src/data/recommendations.ts`, שנבנה מהרשימות השמורות שלי בגוגל מפס.
+- **התמונות:** התיקייה `public/photos`.
+
+**למה לא REST Countries:** בזמן העבודה התברר שהגרסאות הישנות שלו נסגרו, ושהגרסה החדשה (v5) דורשת הרשמה ומפתח API. מאגר mledoze הוא המקור ש-REST Countries עצמו היה בנוי עליו.
+
+## טכנולוגיות
+
+React · TypeScript · Vite · React Router · Vitest · ESLint
+
+## מבנה הקוד
 
 ```
+src/
+├── App.tsx              הניתוב והעמודים
+├── components/          Header ותפריט
+├── data/
+│   ├── recommendations.ts   ההמלצות, היעדים והטקסטים לכל מדינה
+│   └── photos.ts            רשימת התמונות
+├── utils/               פונקציות טהורות (חיפוש, סינון, מיון, סטטיסטיקה, קישור לגוגל מפס) ובדיקות
+└── types.ts             הטיפוס Country
+```
+
+## תיעוד התהליך
+
+- `PRD.md`: מה בונים, למי ולמה, ושורות הקבלה.
+- `tasks.md`: סדר הבנייה, 13 משימות.
+- `PROMPTS.md`: יומן הפרומפטים לסוכן (נרשם אוטומטית), עם הערות שלי אחרי כל משימה.

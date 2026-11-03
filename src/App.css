@@ -65,6 +65,8 @@
 }
 
 .home-intro {
+  display: grid;
+  gap: 8px;
   max-width: 620px;
   margin-top: 4px;
   line-height: 1.8;
@@ -104,15 +106,12 @@
   text-align: start;
 }
 
-.travel-photo-placeholder {
-  display: grid;
+.travel-photo-media {
+  display: block;
   width: 280px;
   height: 290px;
-  place-items: center;
   border-radius: 17px;
-  color: rgb(255 255 255 / 88%);
-  font-size: 58px;
-  text-shadow: 0 2px 12px rgb(0 0 0 / 25%);
+  object-fit: cover;
 }
 
 .travel-photo-card figcaption {
@@ -135,11 +134,11 @@
 }
 
 .gallery-grid .travel-photo-card,
-.gallery-grid .travel-photo-placeholder {
+.gallery-grid .travel-photo-media {
   width: 100%;
 }
 
-.gallery-grid .travel-photo-placeholder {
+.gallery-grid .travel-photo-media {
   height: auto;
   aspect-ratio: 28 / 29;
 }
