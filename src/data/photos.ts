@@ -1045,7 +1045,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-la-grotta-view',
-    title: `מפרץ La Grotta מלמעלה`,
+    title: `פיצה ופסטה טראפל`,
     location: 'קורפו',
     src: '/photos/corfu-la-grotta-view.jpg',
     type: 'image',
@@ -1061,7 +1061,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-rocks-beach-bag',
-    title: `תיק חוף על הסלעים`,
+    title: `קוקטיילים על החוף`,
     location: 'קורפו',
     src: '/photos/corfu-rocks-beach-bag.jpg',
     type: 'image',
@@ -1069,7 +1069,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-beach-club',
-    title: `ביץ' קלאב בפלאיוקסטריצה`,
+    title: `גלידה בעיר העתיקה`,
     location: 'קורפו',
     src: '/photos/corfu-beach-club.jpg',
     type: 'image',
@@ -1077,7 +1077,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-beach-cocktails',
-    title: `קוקטיילים על החוף`,
+    title: `מפרץ La Grotta מלמעלה`,
     location: 'קורפו',
     src: '/photos/corfu-beach-cocktails.jpg',
     type: 'image',
@@ -1117,7 +1117,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-gelato',
-    title: `גלידה בעיר העתיקה`,
+    title: `ביץ' קלאב בפלאיוקסטריצה`,
     location: 'קורפו',
     src: '/photos/corfu-gelato.jpg',
     type: 'image',
@@ -1125,7 +1125,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-truffle-pasta',
-    title: `פיצה ופסטה טראפל`,
+    title: `ארוחה איטלקית בערב`,
     location: 'קורפו',
     src: '/photos/corfu-truffle-pasta.jpg',
     type: 'image',
@@ -1133,7 +1133,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-italian-dinner',
-    title: `ארוחה איטלקית בערב`,
+    title: `הנמל בלילה`,
     location: 'קורפו',
     src: '/photos/corfu-italian-dinner.jpg',
     type: 'image',
@@ -1149,7 +1149,7 @@ export const photos: TravelPhoto[] = [
   },
   {
     id: 'corfu-night-harbor',
-    title: `הנמל בלילה`,
+    title: `תיק חוף על הסלעים`,
     location: 'קורפו',
     src: '/photos/corfu-night-harbor.jpg',
     type: 'image',
