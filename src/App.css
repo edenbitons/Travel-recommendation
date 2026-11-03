@@ -180,8 +180,147 @@
   margin: 0;
 }
 
-.country-area {
-  margin-top: 16px;
+.country-details,
+.country-recommendations {
+  text-align: start;
+}
+
+.country-details {
+  margin-bottom: 48px;
+}
+
+.country-detail-flag {
+  display: block;
+  width: min(180px, 60vw);
+  height: 120px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.country-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin: 28px 0 0;
+}
+
+.country-facts > div {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.country-facts dt {
+  margin-bottom: 6px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.country-facts dd {
+  margin: 0;
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.country-recommendations > h2 {
+  margin-bottom: 16px;
+}
+
+.country-intro {
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+
+.no-country-recommendations {
+  padding: 24px;
+  border-radius: 14px;
+  background: var(--accent-bg);
+  text-align: center;
+}
+
+.destination-list {
+  display: grid;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.destination-group h3 {
+  margin: 0 0 16px;
+  color: var(--text-h);
+}
+
+.recommendation-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.recommendation-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.recommendation-card h4 {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+.recommendation-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  font-size: 14px;
+}
+
+.must-go-label {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #fff3cc;
+  color: #715400;
+  font-weight: 700;
+}
+
+.recommendation-note {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.maps-link,
+.back-to-countries {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.maps-link:hover,
+.back-to-countries:hover {
+  background: var(--accent-bg);
+}
+
+.maps-link:focus-visible,
+.back-to-countries:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.back-to-countries {
+  margin-top: 40px;
 }
 
 .country-card:hover {

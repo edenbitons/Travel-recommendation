@@ -3,6 +3,12 @@ import { Link, Route, Routes, useParams } from 'react-router-dom'
 import type { Country } from './types'
 import { mapCountries } from './utils/countries'
 import {
+  CATEGORY_LABELS,
+  countryIntros,
+  destinations,
+} from './data/recommendations'
+import { getMapsUrl, getRecommendationsByCountry } from './utils/recommendations'
+import {
   excludeCountries,
   filterCountriesByRegion,
   filterCountriesWithRecommendations,
@@ -10,7 +16,6 @@ import {
   sortCountriesByName,
 } from './utils/countryFilters'
 import Header from './components/Header'
-import { destinations } from './data/recommendations'
 import './App.css'
 
 const COUNTRIES_API_URL =
@@ -284,14 +289,117 @@ function CountryPage({
     )
   }
 
+  const countryRecommendations = country
+    ? getRecommendationsByCountry(country.cca3)
+    : []
+  const countryIntro = countryIntros[country?.cca3 ?? '']?.trim()
+
   return (
     <main className="simple-page" dir="rtl">
-      <h1>{country ? country.name : 'מדינה לא נמצאה'}</h1>
-      {country && (
-        <p className="country-area">
-          שטח: {new Intl.NumberFormat('he-IL').format(country.area)} קמ״ר
-        </p>
+      {!country ? (
+        <h1>מדינה לא נמצאה</h1>
+      ) : (
+        <>
+          <section aria-labelledby="country-title" className="country-details">
+            <img
+              alt={`דגל ${country.name}`}
+              className="country-detail-flag"
+              height="120"
+              src={country.flagUrl}
+              width="180"
+            />
+            <h1 id="country-title">{country.name}</h1>
+            <dl className="country-facts">
+              <div>
+                <dt>בירה</dt>
+                <dd>{country.capital.length > 0 ? country.capital.join(', ') : 'לא ידועה'}</dd>
+              </div>
+              <div>
+                <dt>מטבע</dt>
+                <dd>{country.currencies.length > 0 ? country.currencies.join(', ') : 'לא ידוע'}</dd>
+              </div>
+              <div>
+                <dt>שפה</dt>
+                <dd>{country.languages.length > 0 ? country.languages.join(', ') : 'לא ידועה'}</dd>
+              </div>
+              <div>
+                <dt>שטח</dt>
+                <dd>{new Intl.NumberFormat('he-IL').format(country.area)} קמ״ר</dd>
+              </div>
+              <div>
+                <dt>יבשת</dt>
+                <dd>{REGION_LABELS[country.region] ?? country.region}</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section
+            aria-labelledby="recommendations-title"
+            className="country-recommendations"
+          >
+            <h2 id="recommendations-title">המלצות מאחת שיודעת</h2>
+            {countryIntro && <p className="country-intro">{countryIntro}</p>}
+
+            {countryRecommendations.length === 0 ? (
+              <p className="no-country-recommendations">עוד לא הייתי כאן ✈️</p>
+            ) : (
+              <div className="destination-list">
+                {countryRecommendations.map(({ destination, recommendations }) => (
+                  <section
+                    aria-labelledby={`destination-${destination.id}`}
+                    className="destination-group"
+                    key={destination.id}
+                  >
+                    <h3 id={`destination-${destination.id}`}>
+                      {destination.name}
+                    </h3>
+                    <div className="recommendation-list">
+                      {recommendations.map((recommendation) => (
+                        <article
+                          className="recommendation-card"
+                          key={recommendation.id}
+                        >
+                          <h4>{recommendation.name}</h4>
+                          <p className="recommendation-meta">
+                            <span>
+                              {CATEGORY_LABELS[recommendation.category]}
+                            </span>
+                            <span aria-label={`דירוג גוגל ${recommendation.googleRating} מתוך 5`}>
+                              ⭐ {recommendation.googleRating}
+                            </span>
+                            {recommendation.mustGo && (
+                              <span className="must-go-label">חובה</span>
+                            )}
+                          </p>
+                          {recommendation.note && (
+                            <p className="recommendation-note">
+                              {recommendation.note}
+                            </p>
+                          )}
+                          <a
+                            className="maps-link"
+                            href={getMapsUrl(
+                              recommendation.name,
+                              destination.nameEn,
+                            )}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            פתחי בגוגל מפס
+                          </a>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            )}
+          </section>
+        </>
       )}
+      <Link className="back-to-countries" to="/#countries">
+        חזרה לכל המדינות
+      </Link>
     </main>
   )
 }

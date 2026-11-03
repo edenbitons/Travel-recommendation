@@ -66,3 +66,20 @@
 
 
 **בדקתי:** חיפוש "gre", סינון לפי יבשת, "רק עם המלצות" מציג 7 מדינות עם ⭐, "xyz" מציג הודעת אין תוצאות. **שיניתי:** ביקשתי להסתיר את PSE.
+
+
+**16:17 · copilot**
+
+> משימה 6 מ-tasks.md: עמוד מדינה (/countries/:code).
+> הצג את נתוני המדינה מה-API: דגל, שם, בירה, מטבע, שפה, שטח, יבשת.
+> מתחת – אזור "המלצות מאחת שיודעת": קודם הטקסט מ-countryIntros (אם לא ריק), ואז ההמלצות מקובצות לפי יעד (destinations), ובכל המלצה: שם, קטגוריה בעברית (CATEGORY_LABELS), דירוג גוגל, תווית "חובה" אם mustGo, הטיפ (note), וכפתור "פתחי בגוגל מפס".
+> כתוב פונקציה טהורה getMapsUrl(name, destinationNameEn) שבונה https://www.google.com/maps/search/?api=1&query=... ופונקציה getRecommendationsByCountry(cca3) – עם בדיקות לשתיהן.
+> במדינה בלי המלצות: "עוד לא הייתי כאן ✈️". כפתור "חזרה לכל המדינות".
+
+**16:29 · copilot**
+
+> <system_notification>
+> Shell command "Start Vite for country detail browser checks" (shellId: 74) has exited with exit code -1.
+> </system_notification>
+
+**בדקתי:** France – נתונים + "עוד לא הייתי כאן"; Greece – המלצות לפי יעד, קישור לגוגל מפס עובד
