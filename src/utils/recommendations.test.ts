@@ -60,7 +60,7 @@ describe('getDestinationById', () => {
     expect(getDestinationById('thailand')).toMatchObject({
       id: 'thailand',
       name: 'תאילנד',
-      destinationIds: ['koh-tao', 'koh-phangan', 'bangkok'],
+      destinationIds: ['koh-tao', 'koh-phangan', 'bangkok', 'phuket'],
     })
     expect(destinationGroups).toContain(getDestinationById('thailand'))
   })
