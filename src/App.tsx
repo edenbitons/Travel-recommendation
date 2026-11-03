@@ -13,6 +13,7 @@ import {
   getEnrichedRecommendations,
   getMapsUrl,
   getRecommendationsByCountry,
+  getRecommendationStats,
   sortRecommendations,
   type EnrichedRecommendation,
 } from './utils/recommendations'
@@ -593,14 +594,6 @@ function CountryPage({
   )
 }
 
-function SimplePage({ title }: { title: string }) {
-  return (
-    <main className="simple-page" dir="rtl">
-      <h1>{title}</h1>
-    </main>
-  )
-}
-
 function RecommendationsPage({ countries }: { countries: Country[] }) {
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>(
     'all',
@@ -688,6 +681,121 @@ function GalleryPage() {
   )
 }
 
+function AboutPage() {
+  const stats = getRecommendationStats()
+  const maximumCategoryCount = Math.max(
+    ...stats.categories.map((category) => category.count),
+  )
+
+  return (
+    <main className="simple-page about-page" dir="rtl">
+      <header className="page-heading">
+        <p className="eyebrow">Been There, Done That</p>
+        <h1>אודות הפרויקט</h1>
+        <p className="page-description">
+          המלצות זהב מאחת שהייתה שם
+        </p>
+      </header>
+
+      <section aria-labelledby="about-purpose-heading" className="about-section">
+        <h2 id="about-purpose-heading">מה האתר?</h2>
+        <p>
+          Been There, Done That מחבר בין מידע שימושי על מדינות לבין המלצות
+          אישיות למקומות שביקרתי בהם — מסעדות, בתי קפה, מלונות, קניות ואטרקציות.
+          לכל המלצה מצורפים דירוג Google Maps וטיפ אישי כשיש כזה.
+        </p>
+      </section>
+
+      <section aria-labelledby="about-audience-heading" className="about-section">
+        <h2 id="about-audience-heading">למי האתר מיועד?</h2>
+        <p>
+          למטיילות ולמטיילים ישראלים שמתכננים טיול ורוצים למצוא במקום אחד גם
+          פרטים בסיסיים על היעד וגם המלצות ממקור אישי, בגובה העיניים.
+        </p>
+      </section>
+
+      <section aria-labelledby="about-tech-heading" className="about-section">
+        <h2 id="about-tech-heading">ממה הוא בנוי?</h2>
+        <ul className="technology-list">
+          <li>
+            <strong>React, TypeScript ו-Vite</strong>
+            <span>ממשק המשתמש, טיפוסים ובנייה מהירה.</span>
+          </li>
+          <li>
+            <strong>React Router</strong>
+            <span>ניווט בין דף הבית לעמודי המדינות והתוכן.</span>
+          </li>
+          <li>
+            <strong>mledoze/countries דרך jsDelivr</strong>
+            <span>נתוני מדינות, בירות, מטבעות, שפות, יבשות ושטחים.</span>
+          </li>
+          <li>
+            <strong>FlagCDN</strong>
+            <span>תמונות הדגלים, לפי קוד המדינה.</span>
+          </li>
+          <li>
+            <strong>Vitest</strong>
+            <span>בדיקות לפונקציות וללוגיקה של האפליקציה.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="about-stats-heading" className="about-section">
+        <h2 id="about-stats-heading">המספרים שמאחורי ההמלצות</h2>
+        <div className="stats-summary">
+          <article className="stat-card">
+            <strong>{stats.countriesWithRecommendations}</strong>
+            <span>מדינות עם המלצות</span>
+          </article>
+          <article className="stat-card">
+            <strong>{stats.destinationsCount}</strong>
+            <span>יעדים</span>
+          </article>
+          <article className="stat-card">
+            <strong>{stats.recommendationsCount}</strong>
+            <span>המלצות</span>
+          </article>
+        </div>
+
+        <h3 className="category-stats-heading">פילוח לפי קטגוריה</h3>
+        <div className="category-stats">
+          {stats.categories.map(({ category, label, count }) => {
+            const percentage =
+              stats.recommendationsCount === 0
+                ? 0
+                : (count / stats.recommendationsCount) * 100
+
+            return (
+              <div className="category-stat" key={category}>
+                <div className="category-stat-label">
+                  <span>{label}</span>
+                  <span>{count}</span>
+                </div>
+                <div
+                  aria-label={`${label}: ${count} המלצות`}
+                  className="category-stat-track"
+                  role="img"
+                >
+                  <span
+                    className="category-stat-bar"
+                    style={{
+                      width: `${percentage}%`,
+                      maxWidth:
+                        maximumCategoryCount === 0
+                          ? '0%'
+                          : `${(count / maximumCategoryCount) * 100}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+    </main>
+  )
+}
+
 function App() {
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -765,7 +873,7 @@ function App() {
           path="/recommendations"
           element={<RecommendationsPage countries={countries} />}
         />
-        <Route path="/about" element={<SimplePage title="אודות הפרויקט" />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/gallery" element={<GalleryPage />} />
       </Routes>
     </>

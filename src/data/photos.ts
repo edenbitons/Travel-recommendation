@@ -2,56 +2,125 @@ export interface TravelPhoto {
   id: string
   title: string
   location: string
+  /** נתיב לקובץ בתיקייה public/photos */
+  src: string
+  /** 'image' לתמונה, 'video' לסרטון קצר (מתנגן בלולאה, בלי קול) */
+  type: 'image' | 'video'
+  /** צבע רקע שמוצג עד שהתמונה נטענת */
   background: string
 }
 
 export const photos: TravelPhoto[] = [
   {
-    id: 'new-york',
-    title: 'אורות העיר',
+    id: 'koh-phangan-snorkel',
+    title: 'שנורקלינג בין הדגים',
+    location: 'קופנגן',
+    src: '/photos/koh-phangan-snorkel.jpg',
+    type: 'image',
+    background: '#1d7b91',
+  },
+  {
+    id: 'new-york-brooklyn-bridge',
+    title: 'גשר ברוקלין',
     location: 'ניו יורק',
-    background: 'linear-gradient(145deg, #10243b, #517fa5 52%, #f0ad70)',
+    src: '/photos/new-york-brooklyn-bridge.jpg',
+    type: 'image',
+    background: '#517fa5',
   },
   {
-    id: 'budapest',
-    title: 'ערב על הדנובה',
-    location: 'בודפשט',
-    background: 'linear-gradient(145deg, #142d50, #d48258 58%, #f4d5a5)',
-  },
-  {
-    id: 'thailand',
-    title: 'בין האיים',
-    location: 'תאילנד',
-    background: 'linear-gradient(145deg, #1d7b91, #66c2bd 48%, #f3d37d)',
-  },
-  {
-    id: 'athens',
-    title: 'שקיעה בעיר העתיקה',
-    location: 'אתונה',
-    background: 'linear-gradient(145deg, #4c628e, #d08b67 55%, #f2d4a0)',
-  },
-  {
-    id: 'corfu',
-    title: 'כחול בלי סוף',
-    location: 'קורפו',
-    background: 'linear-gradient(145deg, #075b83, #39a7b3 52%, #c3e6cf)',
-  },
-  {
-    id: 'playa',
-    title: 'רגע של חופש',
-    location: 'פלאיה דל כרמן',
-    background: 'linear-gradient(145deg, #087b78, #67c3a0 48%, #f1d78d)',
-  },
-  {
-    id: 'bansko',
-    title: 'אוויר הרים',
+    id: 'bansko-aperol',
+    title: 'אפרול על המסלול',
     location: 'בנסקו',
-    background: 'linear-gradient(145deg, #304a60, #91acb8 50%, #e8dfc7)',
+    src: '/photos/bansko-aperol.jpg',
+    type: 'image',
+    background: '#304a60',
   },
   {
-    id: 'gudauri',
-    title: 'פסגות מושלגות',
+    id: 'corfu-cliffs',
+    title: 'מים טורקיז',
+    location: 'קורפו',
+    src: '/photos/corfu-cliffs.mp4',
+    type: 'video',
+    background: '#39a7b3',
+  },
+  {
+    id: 'athens-acropolis',
+    title: 'האקרופוליס',
+    location: 'אתונה',
+    src: '/photos/athens-acropolis.jpg',
+    type: 'image',
+    background: '#4c628e',
+  },
+  {
+    id: 'gudauri-snowboard',
+    title: 'יום על הסנובורד',
     location: 'גודאורי',
-    background: 'linear-gradient(145deg, #567e9b, #d2e3e7 56%, #f7f3e8)',
+    src: '/photos/gudauri-snowboard.jpg',
+    type: 'image',
+    background: '#d2e3e7',
+  },
+  {
+    id: 'ibiza-boardwalk',
+    title: 'הדרך לים',
+    location: 'איביזה',
+    src: '/photos/ibiza-boardwalk.jpg',
+    type: 'image',
+    background: '#3a7bc8',
+  },
+  {
+    id: 'new-york-times-square',
+    title: 'טיימס סקוור',
+    location: 'ניו יורק',
+    src: '/photos/new-york-times-square.jpg',
+    type: 'image',
+    background: '#10243b',
+  },
+  {
+    id: 'koh-phangan-beach',
+    title: 'חוף שקט',
+    location: 'קופנגן',
+    src: '/photos/koh-phangan-beach.mp4',
+    type: 'video',
+    background: '#66c2bd',
+  },
+  {
+    id: 'bansko-slope',
+    title: 'רגע לפני הירידה',
+    location: 'בנסקו',
+    src: '/photos/bansko-slope.jpg',
+    type: 'image',
+    background: '#91acb8',
+  },
+  {
+    id: 'ibiza-beach-lunch',
+    title: 'ארוחה מול הים',
+    location: 'איביזה',
+    src: '/photos/ibiza-beach-lunch.jpg',
+    type: 'image',
+    background: '#4a9fd8',
+  },
+  {
+    id: 'koh-phangan-road',
+    title: 'על הקטנוע',
+    location: 'קופנגן',
+    src: '/photos/koh-phangan-road.jpg',
+    type: 'image',
+    background: '#3f7a3a',
+  },
+  {
+    id: 'gudauri-snow',
+    title: 'בוקר מושלג',
+    location: 'גודאורי',
+    src: '/photos/gudauri-snow.jpg',
+    type: 'image',
+    background: '#1f4fb0',
+  },
+  {
+    id: 'new-york-street',
+    title: 'רחובות מנהטן',
+    location: 'ניו יורק',
+    src: '/photos/new-york-street.jpg',
+    type: 'image',
+    background: '#3b6fc4',
   },
 ]

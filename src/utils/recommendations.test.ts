@@ -3,6 +3,7 @@ import {
   filterByCategory,
   getMapsUrl,
   getRecommendationsByCountry,
+  getRecommendationStats,
   sortRecommendations,
 } from './recommendations'
 import type { Recommendation } from '../data/recommendations'
@@ -92,5 +93,20 @@ describe('sortRecommendations', () => {
       ),
     ).toEqual(['must-go-lower-rating', 'high-rated', 'low-rated'])
     expect(sampleRecommendations[0].id).toBe('low-rated')
+  })
+})
+
+describe('getRecommendationStats', () => {
+  it('calculates country, destination, recommendation, and category totals', () => {
+    const stats = getRecommendationStats()
+
+    expect(stats.countriesWithRecommendations).toBe(6)
+    expect(stats.destinationsCount).toBe(10)
+    expect(stats.recommendationsCount).toBe(113)
+    expect(stats.categories).toHaveLength(7)
+    expect(stats.categories.reduce((total, category) => total + category.count, 0))
+      .toBe(stats.recommendationsCount)
+    expect(stats.categories.find(({ category }) => category === 'restaurant'))
+      .toMatchObject({ label: 'מסעדות', count: 34 })
   })
 })

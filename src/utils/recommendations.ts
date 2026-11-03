@@ -1,4 +1,5 @@
 import {
+  CATEGORY_LABELS,
   destinations,
   recommendations,
   type Category,
@@ -16,6 +17,17 @@ export interface EnrichedRecommendation {
   recommendation: Recommendation
   destination: Destination
   country: Country | undefined
+}
+
+export interface RecommendationStats {
+  countriesWithRecommendations: number
+  destinationsCount: number
+  recommendationsCount: number
+  categories: {
+    category: Category
+    label: string
+    count: number
+  }[]
 }
 
 export function getMapsUrl(name: string, destinationNameEn: string): string {
@@ -85,4 +97,30 @@ export function getEnrichedRecommendations(
         ]
       : []
   })
+}
+
+export function getRecommendationStats(): RecommendationStats {
+  const activeDestinations = destinations.filter((destination) =>
+    recommendations.some(
+      (recommendation) => recommendation.destinationId === destination.id,
+    ),
+  )
+  const countriesWithRecommendations = new Set(
+    activeDestinations.map((destination) => destination.countryCode),
+  )
+
+  return {
+    countriesWithRecommendations: countriesWithRecommendations.size,
+    destinationsCount: activeDestinations.length,
+    recommendationsCount: recommendations.length,
+    categories: (Object.keys(CATEGORY_LABELS) as Category[]).map(
+      (category) => ({
+        category,
+        label: CATEGORY_LABELS[category],
+        count: recommendations.filter(
+          (recommendation) => recommendation.category === category,
+        ).length,
+      }),
+    ),
+  }
 }
