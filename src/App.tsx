@@ -11,9 +11,9 @@ import {
 } from './data/recommendations'
 import {
   filterByCategory,
+  getDestinationById,
   getEnrichedRecommendations,
   getMapsUrl,
-  getRecommendationsByCountry,
   getRecommendationStats,
   sortRecommendations,
   type EnrichedRecommendation,
@@ -301,10 +301,14 @@ function HomePage({
       </section>
 
       <p aria-label="היעדים שלנו" className="destination-strip" dir="rtl">
-        ניו יורק <span>•</span> בודפשט <span>•</span> בנגקוק <span>•</span> קו
-        טאו <span>•</span> פוקט <span>•</span> אתונה <span>•</span> רודוס
-        <span>•</span> קורפו <span>•</span> פלאיה דל כרמן <span>•</span> בנסקו
-        <span>•</span> גודאורי
+        {destinations.map((destination, index) => (
+          <span className="destination-strip-item" key={destination.id}>
+            {index > 0 && <span aria-hidden="true">•</span>}
+            <Link to={`/destinations/${destination.id}`}>
+              {destination.name}
+            </Link>
+          </span>
+        ))}
       </p>
 
       <section aria-label="תמונות מהטיולים" className="photo-strip">
@@ -525,8 +529,10 @@ function CountryPage({
     )
   }
 
-  const countryRecommendations = country
-    ? getRecommendationsByCountry(country.cca3)
+  const countryDestinations = country
+    ? destinations.filter(
+        (destination) => destination.countryCode === country.cca3,
+      )
     : []
   const countryIntro = countryIntros[country?.cca3 ?? '']?.trim()
 
@@ -577,58 +583,69 @@ function CountryPage({
             <h2 id="recommendations-title">המלצות מאחת שיודעת</h2>
             {countryIntro && <p className="country-intro">{countryIntro}</p>}
 
-            {countryRecommendations.length === 0 ? (
+            {countryDestinations.length === 0 ? (
               <p className="no-country-recommendations">עוד לא הייתי כאן ✈️</p>
             ) : (
               <div className="destination-list">
-                {countryRecommendations.map(({ destination, recommendations }) => (
+                {countryDestinations.map((destination) => {
+                  const destinationRecommendations = recommendations.filter(
+                    (recommendation) =>
+                      recommendation.destinationId === destination.id,
+                  )
+
+                  return (
                   <section
                     aria-labelledby={`destination-${destination.id}`}
                     className="destination-group"
                     key={destination.id}
                   >
                     <h3 id={`destination-${destination.id}`}>
-                      {destination.name}
+                      <Link to={`/destinations/${destination.id}`}>
+                        {destination.name}
+                      </Link>
                     </h3>
-                    <div className="recommendation-list">
-                      {recommendations.map((recommendation) => (
-                        <article
-                          className="recommendation-card"
-                          key={recommendation.id}
-                        >
-                          <h4>{recommendation.name}</h4>
-                          <p className="recommendation-meta">
-                            <span>
-                              {CATEGORY_LABELS[recommendation.category]}
-                            </span>
-                            <span aria-label={`דירוג גוגל ${recommendation.googleRating} מתוך 5`}>
-                              ⭐ {recommendation.googleRating}
-                            </span>
-                            {recommendation.mustGo && (
-                              <span className="must-go-label">חובה</span>
-                            )}
-                          </p>
-                          {recommendation.note && (
-                            <p className="recommendation-note">
-                              {recommendation.note}
-                            </p>
-                          )}
-                          <a
-                            className="maps-link"
-                            href={getMapsUrl(
-                              recommendation.name,
-                              destination.nameEn,
-                            )}
-                            rel="noreferrer"
-                            target="_blank"
+                    {destinationRecommendations.length > 0 && (
+                      <div className="recommendation-list">
+                        {destinationRecommendations.map((recommendation) => (
+                          <article
+                            className="recommendation-card"
+                            key={recommendation.id}
                           >
-                            פתחי בגוגל מפס
-                          </a>
-                        </article>
-                      ))}
-                    </div>
+                            <h4>{recommendation.name}</h4>
+                            <p className="recommendation-meta">
+                              <span>
+                                {CATEGORY_LABELS[recommendation.category]}
+                              </span>
+                              <span aria-label={`דירוג גוגל ${recommendation.googleRating} מתוך 5`}>
+                                ⭐ {recommendation.googleRating}
+                              </span>
+                              {recommendation.mustGo && (
+                                <span className="must-go-label">חובה</span>
+                              )}
+                            </p>
+                            {recommendation.note && (
+                              <p className="recommendation-note">
+                                {recommendation.note}
+                              </p>
+                            )}
+                            <a
+                              className="maps-link"
+                              href={getMapsUrl(
+                                recommendation.name,
+                                destination.nameEn,
+                              )}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              פתחי בגוגל מפס
+                            </a>
+                          </article>
+                        ))}
+                      </div>
+                    )}
                   </section>
-                ))}
+                  )
+                })}
               </div>
             )}
           </section>
@@ -636,6 +653,101 @@ function CountryPage({
       )}
       <Link className="back-to-countries" to="/#countries">
         חזרה לכל המדינות
+      </Link>
+    </main>
+  )
+}
+
+function DestinationPage({ countries }: { countries: Country[] }) {
+  const { id } = useParams()
+  const destination = getDestinationById(id ?? '')
+  const country = countries.find(
+    (item) => item.cca3 === destination?.countryCode,
+  )
+  const destinationPhotos = (destination?.photos ?? []).flatMap((photoId) => {
+    const photo = photos.find((item) => item.id === photoId)
+    return photo ? [photo] : []
+  })
+  const destinationRecommendations = destination
+    ? getEnrichedRecommendations(countries).filter(
+        (item) => item.destination.id === destination.id,
+      )
+    : []
+
+  if (!destination) {
+    return (
+      <main className="simple-page destination-page" dir="rtl">
+        <h1>יעד לא נמצא</h1>
+        <Link className="back-to-countries" to="/">
+          חזרה
+        </Link>
+      </main>
+    )
+  }
+
+  return (
+    <main className="simple-page destination-page" dir="rtl">
+      <header className="page-heading destination-heading">
+        <p className="eyebrow">היעד הבא שלך</p>
+        <h1>{destination.name}</h1>
+        <p className="page-description">
+          {country?.name ?? destination.countryCode}
+        </p>
+        <Link
+          className="destination-country-link"
+          to={`/countries/${destination.countryCode}`}
+        >
+          לעמוד המדינה {country?.name ?? destination.countryCode}
+        </Link>
+      </header>
+
+      {destination.intro?.trim() && (
+        <p className="destination-intro">{destination.intro}</p>
+      )}
+
+      {destinationPhotos.length > 0 && (
+        <section
+          aria-label={`תמונות וסרטונים מ${destination.name}`}
+          className="destination-media"
+        >
+          <p className="eyebrow">רגעים מהדרך</p>
+          <div className="gallery-grid">
+            {destinationPhotos.map((photo) => (
+              <TravelPhotoCard key={photo.id} photo={photo} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section
+        aria-labelledby="destination-recommendations-title"
+        className="destination-recommendations"
+      >
+        <p className="eyebrow">מה כדאי לעשות</p>
+        <h2 id="destination-recommendations-title">
+          המלצות ב{destination.name}
+        </h2>
+        {destinationRecommendations.length > 0 ? (
+          <div className="recommendation-list">
+            {destinationRecommendations.map((item) => (
+              <RecommendationCard
+                item={item}
+                key={item.recommendation.id}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="no-country-recommendations">
+            ההמלצות ליעד הזה יתווספו בקרוב.
+          </p>
+        )}
+      </section>
+
+      <Link
+        className="back-to-countries"
+        to={`/countries/${destination.countryCode}`}
+      >
+        חזרה
       </Link>
     </main>
   )
@@ -919,6 +1031,10 @@ function App() {
               onRetry={retry}
             />
           }
+        />
+        <Route
+          path="/destinations/:id"
+          element={<DestinationPage countries={countries} />}
         />
         <Route
           path="/recommendations"

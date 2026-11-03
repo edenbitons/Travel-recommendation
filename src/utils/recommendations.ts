@@ -30,6 +30,10 @@ export interface RecommendationStats {
   }[]
 }
 
+export function getDestinationById(id: string): Destination | undefined {
+  return destinations.find((destination) => destination.id === id)
+}
+
 export function getMapsUrl(name: string, destinationNameEn: string): string {
   const query = new URLSearchParams({
     query: `${name} ${destinationNameEn}`,

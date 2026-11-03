@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   filterByCategory,
+  getDestinationById,
   getMapsUrl,
   getRecommendationsByCountry,
   getRecommendationStats,
@@ -36,6 +37,20 @@ const sampleRecommendations: Recommendation[] = [
     mustGo: true,
   },
 ]
+
+describe('getDestinationById', () => {
+  it('returns a destination by its id', () => {
+    expect(getDestinationById('koh-tao')).toMatchObject({
+      id: 'koh-tao',
+      name: 'קו טאו',
+      countryCode: 'THA',
+    })
+  })
+
+  it('returns undefined when the destination does not exist', () => {
+    expect(getDestinationById('unknown-destination')).toBeUndefined()
+  })
+})
 
 describe('getMapsUrl', () => {
   it('creates a Google Maps search URL from the place and destination', () => {

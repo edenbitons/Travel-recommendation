@@ -28,6 +28,8 @@ export interface Destination {
   name: string; // שם בעברית, לתצוגה
   nameEn: string; // שם באנגלית, לחיפוש בגוגל מפס
   countryCode: string; // cca3 – מקשר למדינה מ-REST Countries
+  intro?: string; // כמה מילים שלי על היעד – מוצג בעמוד היעד
+  photos?: string[]; // מזהי תמונות (id) מתוך src/data/photos.ts – מוצגות בעמוד היעד
 }
 
 export interface Recommendation {
@@ -41,17 +43,19 @@ export interface Recommendation {
 }
 
 export const destinations: Destination[] = [
-  { id: 'new-york', name: 'ניו יורק', nameEn: 'New York', countryCode: 'USA' },
-  { id: 'budapest', name: 'בודפשט', nameEn: 'Budapest', countryCode: 'HUN' },
-  { id: 'bangkok', name: 'בנגקוק', nameEn: 'Bangkok', countryCode: 'THA' },
-  { id: 'koh-phangan', name: 'קופנגן', nameEn: 'Koh Phangan', countryCode: 'THA' },
-  { id: 'phuket', name: 'פוקט', nameEn: 'Phuket', countryCode: 'THA' },
-  { id: 'athens', name: 'אתונה', nameEn: 'Athens', countryCode: 'GRC' },
-  { id: 'rhodes', name: 'רודוס', nameEn: 'Rhodes', countryCode: 'GRC' },
-  { id: 'corfu', name: 'קורפו', nameEn: 'Corfu', countryCode: 'GRC' },
-  { id: 'playa-del-carmen', name: 'פלאיה דל כרמן', nameEn: 'Playa del Carmen', countryCode: 'MEX' },
-  { id: 'bansko', name: 'בנסקו', nameEn: 'Bansko', countryCode: 'BGR' },
-  { id: 'gudauri', name: 'גודאורי', nameEn: 'Gudauri', countryCode: 'GEO' }, // סקי – ההמלצות בדרך
+  { id: 'new-york', name: 'ניו יורק', nameEn: 'New York', countryCode: 'USA', intro: `ידעתם שאפשר להתאהב בעיר?\nניו יורק, עיר האפשרויות. העיר שמתהלכים בה ומרגישים כמו נמלה בין גורדי השחקים, עם קולינריה בלתי נגמרת וסטייל בכל פינה.\nטיילתי חמישה ימים בניו יורק בכריסמס, ולא שבעתי ממנה. כל יום הסתכם בעשרות אלפי צעדים ובבטן מלאה באוכל טעים.\nהרכבת התחתית והרגליים הן הדרך הכי טובה וקלה להתנייד בעיר.\nלא לוותר על מחזמר טוב (אפשר לסגור גם בספונטניות, לא חייבים הרבה זמן מראש) ועל פיקניק בסנטרל פארק.\nכל ההמלצות שריכזתי לכם נלקחו ממי שיודע הכי טוב – חבר טוב שלי שהוא דייל באל על (אבל אל תספרו לו).\nתעשו לעצמכם טוב ותכרטסו את עצמכם לשם!`, photos: ['new-york-brooklyn-bridge', 'new-york-times-square', 'new-york-street'] },
+  { id: 'budapest', name: 'בודפשט', nameEn: 'Budapest', countryCode: 'HUN', intro: `אירופה קלאסית ומהממת.\nממליצה על בודפשט כיעד רומנטי לזוג, או לטיול עם חברות או עם אמא.\nביקרתי בבודפשט בכריסמס וטיילתי בין השווקים. אורות קישטו את העיר, ושוקו חם וקיורטוש היו בכל פינה.\nאטרקציות חמודות: הגלגל הענק, ושיט על הדנובה – הנהר שמחבר בין בודה לפשט.\nיש שופינג בשדרה המרכזית, בתי קפה מעולים, ברים עם קונספט מגניב, ומסאז' מעולה למי שאוהב להתפנק.\nאת כל אלה ריכזתי לכם כאן, נגיש וקל!`, photos: [] },
+  { id: 'bangkok', name: 'בנגקוק', nameEn: 'Bangkok', countryCode: 'THA', intro: '', photos: [] },
+  { id: 'koh-phangan', name: 'קופנגן', nameEn: 'Koh Phangan', countryCode: 'THA', intro: '', photos: [] },
+  { id: 'koh-tao', name: 'קו טאו', nameEn: 'Koh Tao', countryCode: 'THA', intro: '', photos: ['koh-phangan-snorkel', 'koh-phangan-beach', 'koh-phangan-road'] },
+  { id: 'phuket', name: 'פוקט', nameEn: 'Phuket', countryCode: 'THA', intro: '', photos: [] },
+  { id: 'athens', name: 'אתונה', nameEn: 'Athens', countryCode: 'GRC', intro: '', photos: ['athens-acropolis'] },
+  { id: 'rhodes', name: 'רודוס', nameEn: 'Rhodes', countryCode: 'GRC', intro: '', photos: [] },
+  { id: 'corfu', name: 'קורפו', nameEn: 'Corfu', countryCode: 'GRC', intro: '', photos: ['corfu-cliffs'] },
+  // מקסיקו = יעד אחד: פלאיה דל כרמן, בקלאר, איסלה ופוארטו אסקונדידו. (id נשאר playa-del-carmen כדי לא לשבור את ההמלצות הקיימות)
+  { id: 'playa-del-carmen', name: 'מקסיקו', nameEn: 'Playa del Carmen', countryCode: 'MEX', intro: '', photos: [] },
+  { id: 'bansko', name: 'בנסקו', nameEn: 'Bansko', countryCode: 'BGR', intro: '', photos: ['bansko-aperol', 'bansko-slope'] },
+  { id: 'gudauri', name: 'גודאורי', nameEn: 'Gudauri', countryCode: 'GEO', intro: '', photos: ['gudauri-snowboard', 'gudauri-snow'] }, // סקי – ההמלצות בדרך
 ];
 
 // מלל אישי לכל מדינה שאני ממליצה עליה – כמה מילים שמופיעות בראש אזור ההמלצות בעמוד המדינה.
