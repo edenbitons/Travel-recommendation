@@ -6,7 +6,7 @@
   יוצרים את `src/types.ts` עם `Country`, `Destination` ו-`Recommendation` (כולל `googleRating` ו-`mustGo`), ואת `src/data/recommendations.ts` עם 3 המלצות לדוגמה. דף הבית מציג רשימת מדינות מקובץ JSON מקומי, עדיין בלי API.
   Done when: הרשימה המקומית מוצגת, ו-`npm run build` עובר בלי שגיאות.
 
-- [ ] **2. ניתוב ופס עליון**
+- [x] **2. ניתוב ופס עליון**
   מגדירים React Router עם `/`, `/countries/:code`, `/recommendations`, `/about`, `/gallery`. בונים קומפוננטת `Header`: פס לבן, "בס"ד" בקטן מימין, וכפתור ☰ משמאל שפותח וסוגר תפריט (`useState`). בתפריט: בית, סביב העולם, אודות הפרויקט, המלצות מאחת שיודעת, תמונות.
   Done when: שורת קבלה 2 מה-PRD עובדת, ולחיצה על כרטיס מדינה פותחת את `/countries/<code>`.
 

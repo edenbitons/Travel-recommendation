@@ -46,10 +46,24 @@
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--bg);
+  color: inherit;
   box-shadow: var(--shadow);
+  text-decoration: none;
   transition:
     border-color 160ms ease,
     transform 160ms ease;
+}
+
+.simple-page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1126px;
+  margin: 0 auto;
+  padding: 72px 32px;
+}
+
+.simple-page h1 {
+  margin: 0;
 }
 
 .country-card:hover {
