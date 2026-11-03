@@ -45,7 +45,7 @@ export interface Recommendation {
 
 export const destinations: Destination[] = [
   { id: 'new-york', name: 'ניו יורק', nameEn: 'New York', countryCode: 'USA', intro: `ידעתם שאפשר להתאהב בעיר?\nניו יורק, עיר האפשרויות. העיר שמתהלכים בה ומרגישים כמו נמלה בין גורדי השחקים, עם קולינריה בלתי נגמרת וסטייל בכל פינה.\nטיילתי חמישה ימים בניו יורק בכריסמס, ולא שבעתי ממנה. כל יום הסתכם בעשרות אלפי צעדים ובבטן מלאה באוכל טעים.\nהרכבת התחתית והרגליים הן הדרך הכי טובה וקלה להתנייד בעיר.\nלא לוותר על מחזמר טוב (אפשר לסגור גם בספונטניות, לא חייבים הרבה זמן מראש) ועל פיקניק בסנטרל פארק.\nכל ההמלצות שריכזתי לכם נלקחו ממי שיודע הכי טוב – חבר טוב שלי שהוא דייל באל על (אבל אל תספרו לו).\nתעשו לעצמכם טוב ותכרטסו את עצמכם לשם!`, photos: ['new-york-brooklyn-bridge', 'new-york-times-square', 'new-york-street'] },
-  { id: 'budapest', name: 'בודפשט', nameEn: 'Budapest', countryCode: 'HUN', intro: `אירופה קלאסית ומהממת.\nממליצה על בודפשט כיעד רומנטי לזוג, או לטיול עם חברות או עם אמא.\nביקרתי בבודפשט בכריסמס וטיילתי בין השווקים. אורות קישטו את העיר, ושוקו חם וקיורטוש היו בכל פינה.\nאטרקציות חמודות: הגלגל הענק, ושיט על הדנובה – הנהר שמחבר בין בודה לפשט.\nיש שופינג בשדרה המרכזית, בתי קפה מעולים, ברים עם קונספט מגניב, ומסאז' מעולה למי שאוהב להתפנק.\nאת כל אלה ריכזתי לכם כאן, נגיש וקל!`, photos: [] },
+  { id: 'budapest', name: 'בודפשט', nameEn: 'Budapest', countryCode: 'HUN', intro: `אירופה קלאסית ומהממת.\nממליצה על בודפשט כיעד רומנטי לזוג, או לטיול עם חברות או עם אמא.\nביקרתי בבודפשט בכריסמס וטיילתי בין השווקים. אורות קישטו את העיר, ושוקו חם וקיורטוש היו בכל פינה.\nאטרקציות חמודות: הגלגל הענק, ושיט על הדנובה – הנהר שמחבר בין בודה לפשט.\nיש שופינג בשדרה המרכזית, בתי קפה מעולים, ברים עם קונספט מגניב, ומסאז' מעולה למי שאוהב להתפנק.\nאת כל אלה ריכזתי לכם כאן, נגיש וקל!`, photos: ['budapest-parliament-night', 'budapest-langos', 'budapest-ferris-wheel', 'budapest-hot-chocolate', 'budapest-video', 'budapest-matthias-church', 'budapest-waffles', 'budapest-wheel-view', 'budapest-christmas-market', 'budapest-bagel', 'budapest-parliament', 'budapest-bread-soup', 'budapest-spirit-massage', 'budapest-casino'] },
   { id: 'bangkok', name: 'בנגקוק', nameEn: 'Bangkok', countryCode: 'THA', intro: '', photos: [] },
   { id: 'koh-phangan', name: 'קופנגן', nameEn: 'Koh Phangan', countryCode: 'THA', intro: '', photos: [] },
   { id: 'koh-tao', name: 'קו טאו', nameEn: 'Koh Tao', countryCode: 'THA', intro: '', photos: ['koh-phangan-snorkel', 'koh-phangan-beach', 'koh-phangan-road'] },
@@ -239,4 +239,6 @@ export const recommendations: Recommendation[] = [
 
   // ───────── תוספות ─────────
   { id: 'ella-elissa', name: 'Ella Elissa', destinationId: 'rhodes', category: 'hotel', mustGo: true, note: 'הכול כלול, למבוגרים בלבד – אפשר לתאם מראש אימון טניס עם מאמן של המלון' },
+  { id: 'rumpus', name: 'Rumpus Tiki Bar', destinationId: 'budapest', category: 'nightlife', note: 'בר עם קונספט – קוקטיילים מעשנים בכלים מגניבים' },
+  { id: 'budapest-eye', name: 'Budapest Eye', destinationId: 'budapest', category: 'attraction', note: 'הגלגל הענק – נוף מהמם על העיר' },
 ];

@@ -8,11 +8,13 @@ import {
   sortRecommendations,
 } from './recommendations'
 import {
+  CATEGORY_LABELS,
   destinationGroups,
   destinations,
   recommendations,
   type Recommendation,
 } from '../data/recommendations'
+import { photos } from '../data/photos'
 
 const sampleRecommendations: Recommendation[] = [
   {
@@ -82,9 +84,14 @@ describe('getMapsUrl', () => {
   })
 
   it('creates a valid destination query for every recommendation', () => {
-    expect(recommendations).toHaveLength(127)
+    expect(recommendations.length).toBeGreaterThan(0)
+    expect(new Set(recommendations.map(({ id }) => id)).size).toBe(
+      recommendations.length,
+    )
 
     for (const recommendation of recommendations) {
+      expect(recommendation.id.trim()).not.toBe('')
+      expect(recommendation.name.trim()).not.toBe('')
       const destination = destinations.find(
         (item) => item.id === recommendation.destinationId,
       )
@@ -105,6 +112,23 @@ describe('getMapsUrl', () => {
       expect(url.searchParams.get('query')).toBe(
         `${recommendation.name} ${destination.nameEn}`,
       )
+    }
+  })
+
+  it('keeps destination photos linked to existing media', () => {
+    expect(photos.length).toBeGreaterThan(0)
+
+    const photoIds = new Set(photos.map((photo) => photo.id))
+    for (const photo of photos) {
+      expect(photo.id.trim()).not.toBe('')
+      expect(photo.title.trim()).not.toBe('')
+      expect(photo.src.trim()).not.toBe('')
+    }
+
+    for (const destination of destinations) {
+      for (const photoId of destination.photos ?? []) {
+        expect(photoIds.has(photoId)).toBe(true)
+      }
     }
   })
 })
@@ -175,14 +199,32 @@ describe('sortRecommendations', () => {
 describe('getRecommendationStats', () => {
   it('calculates country, destination, recommendation, and category totals', () => {
     const stats = getRecommendationStats()
+    const destinationsWithRecommendations = destinations.filter((destination) =>
+      recommendations.some(
+        (recommendation) => recommendation.destinationId === destination.id,
+      ),
+    )
+    const expectedCountries = new Set(
+      destinationsWithRecommendations.map(
+        (destination) => destination.countryCode,
+      ),
+    )
 
-    expect(stats.countriesWithRecommendations).toBe(6)
-    expect(stats.destinationsCount).toBe(11)
-    expect(stats.recommendationsCount).toBe(127)
-    expect(stats.categories).toHaveLength(7)
+    expect(stats.countriesWithRecommendations).toBe(expectedCountries.size)
+    expect(stats.destinationsCount).toBe(destinationsWithRecommendations.length)
+    expect(stats.recommendationsCount).toBe(recommendations.length)
+    expect(stats.categories).toHaveLength(Object.keys(CATEGORY_LABELS).length)
     expect(stats.categories.reduce((total, category) => total + category.count, 0))
       .toBe(stats.recommendationsCount)
-    expect(stats.categories.find(({ category }) => category === 'restaurant'))
-      .toMatchObject({ label: 'מסעדות', count: 36 })
+
+    for (const categoryStats of stats.categories) {
+      expect(categoryStats.label).toBe(CATEGORY_LABELS[categoryStats.category])
+      expect(categoryStats.count).toBe(
+        recommendations.filter(
+          (recommendation) =>
+            recommendation.category === categoryStats.category,
+        ).length,
+      )
+    }
   })
 })
