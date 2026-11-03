@@ -358,7 +358,10 @@ function HomePage({
       </p>
 
       <section aria-label="תמונות מהטיולים" className="photo-strip">
-        <div className="photo-strip-track">
+        <div
+          className="photo-strip-track"
+          style={{ animationDuration: `${photos.length * 4}s` }}
+        >
           {[...photos, ...photos].map((photo, index) => (
             <div
               aria-hidden={index >= photos.length}
