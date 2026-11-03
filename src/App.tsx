@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, Route, Routes, useParams } from 'react-router-dom'
 import type { Country } from './types'
 import { mapCountries } from './utils/countries'
+import { sortCountriesByName } from './utils/countryFilters'
 import Header from './components/Header'
 import './App.css'
 
@@ -70,7 +71,7 @@ function HomePage({
           id="countries"
           aria-label="רשימת מדינות"
         >
-          {countries.map((country) => (
+          {sortCountriesByName(countries).map((country) => (
             <Link
               className="country-card"
               key={country.cca3}
