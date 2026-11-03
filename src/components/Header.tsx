@@ -4,10 +4,9 @@ import './Header.css'
 
 const menuItems = [
   { label: 'בית', to: '/' },
-  { label: 'סביב העולם', to: '/#countries' },
-  { label: 'אודות הפרויקט', to: '/about' },
   { label: 'המלצות מאחת שיודעת', to: '/recommendations' },
   { label: 'תמונות', to: '/gallery' },
+  { label: 'אודות הפרויקט', to: '/about' },
 ]
 
 function Header() {
