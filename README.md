@@ -48,11 +48,13 @@ React · TypeScript · Vite · React Router · Vitest · ESLint
 ```
 src/
 ├── App.tsx              הניתוב והעמודים
+├── App.css              עיצוב העמודים והרכיבים
+├── index.css            עיצוב גלובלי ומשתני צבע
 ├── components/          Header ותפריט
 ├── data/
-│   ├── recommendations.ts   ההמלצות, היעדים והטקסטים לכל מדינה
+│   ├── recommendations.ts   היעדים וההמלצות (הטקסטים האישיים למדינות עדיין ריקים)
 │   └── photos.ts            רשימת התמונות
-├── utils/               פונקציות טהורות (חיפוש, סינון, מיון, סטטיסטיקה, קישור לגוגל מפס) ובדיקות
+├── utils/               מיפוי, חיפוש, סינון, מיון, סטטיסטיקה וקישורי מפות, עם בדיקות
 └── types.ts             הטיפוס Country
 ```
 
