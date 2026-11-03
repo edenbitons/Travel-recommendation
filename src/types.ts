@@ -1,10 +1,11 @@
 export interface Country {
+  cca2: string
   cca3: string
   name: string
-  flag: string
+  flagUrl: string
   capital: string[]
   region: string
   currencies: string[]
   languages: string[]
-  population: number
+  area: number
 }

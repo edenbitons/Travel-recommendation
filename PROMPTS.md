@@ -29,3 +29,13 @@
 > הצג תוכנית קצרה לפני הקוד.
 
 **בדקתי:** התפריט נפתח ונסגר, כל הקישורים עובדים, לחיצה על כרטיס פותחת /countries/GRC.
+**15:25 · copilot**
+
+> עכשיו משימה 3: החלף את countries.json ב-fetch ל-REST Countries בתוך useEffect:
+> https://restcountries.com/v3.1/all?fields=name,flags,capital,currencies,languages,region,cca3,population
+> הוסף מצב טעינה ("טוען מדינות..."), מצב שגיאה עם כפתור "נסו שוב", והצג את כל המדינות עם תמונת הדגל מה-API.
+> כתוב פונקציה טהורה ב-src/utils/ שממפה את תשובת ה-API ל-Country.
+> הצג תוכנית קצרה לפני הקוד.
+
+ביומן: **בדקתי:** 250 מדינות עם דגלים נטענות; מצב השגיאה עובד (ראיתי אותו כשהכתובת הישנה נכשלה). **שיניתי:** REST Countries דורש עכשיו מפתח, עברתי ל-mledoze/countries.
+
