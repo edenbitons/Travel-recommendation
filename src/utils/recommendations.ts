@@ -1,9 +1,11 @@
 import {
   CATEGORY_LABELS,
+  destinationGroups,
   destinations,
   recommendations,
   type Category,
   type Destination,
+  type DestinationGroup,
   type Recommendation,
 } from '../data/recommendations'
 import type { Country } from '../types'
@@ -30,8 +32,13 @@ export interface RecommendationStats {
   }[]
 }
 
-export function getDestinationById(id: string): Destination | undefined {
-  return destinations.find((destination) => destination.id === id)
+export function getDestinationById(
+  id: string,
+): Destination | DestinationGroup | undefined {
+  return (
+    destinations.find((destination) => destination.id === id) ??
+    destinationGroups.find((group) => group.id === id)
+  )
 }
 
 export function getMapsUrl(name: string, destinationNameEn: string): string {
@@ -74,8 +81,18 @@ export function sortRecommendations(
   items: Recommendation[],
 ): Recommendation[] {
   return items.slice().sort((first, second) => {
+    const ratingAvailability =
+      Number(second.googleRating !== undefined) -
+      Number(first.googleRating !== undefined)
+    if (ratingAvailability !== 0) {
+      return ratingAvailability
+    }
+
     const mustGoOrder = Number(Boolean(second.mustGo)) - Number(Boolean(first.mustGo))
-    return mustGoOrder || second.googleRating - first.googleRating
+    return (
+      mustGoOrder ||
+      (second.googleRating ?? 0) - (first.googleRating ?? 0)
+    )
   })
 }
 

@@ -8,6 +8,7 @@ import {
   sortRecommendations,
 } from './recommendations'
 import {
+  destinationGroups,
   destinations,
   recommendations,
   type Recommendation,
@@ -36,6 +37,12 @@ const sampleRecommendations: Recommendation[] = [
     googleRating: 4.1,
     mustGo: true,
   },
+  {
+    id: 'unrated',
+    name: 'Unrated place',
+    destinationId: 'athens',
+    category: 'restaurant',
+  },
 ]
 
 describe('getDestinationById', () => {
@@ -45,6 +52,15 @@ describe('getDestinationById', () => {
       name: 'קו טאו',
       countryCode: 'THA',
     })
+  })
+
+  it('returns a destination group by its id', () => {
+    expect(getDestinationById('thailand')).toMatchObject({
+      id: 'thailand',
+      name: 'תאילנד',
+      destinationIds: ['koh-tao', 'koh-phangan', 'bangkok'],
+    })
+    expect(destinationGroups).toContain(getDestinationById('thailand'))
   })
 
   it('returns undefined when the destination does not exist', () => {
@@ -65,8 +81,8 @@ describe('getMapsUrl', () => {
     expect(url.searchParams.get('query')).toBe('קפה New York')
   })
 
-  it('creates a valid destination query for all 113 recommendations', () => {
-    expect(recommendations).toHaveLength(113)
+  it('creates a valid destination query for every recommendation', () => {
+    expect(recommendations).toHaveLength(127)
 
     for (const recommendation of recommendations) {
       const destination = destinations.find(
@@ -120,6 +136,7 @@ describe('filterByCategory', () => {
   it('returns recommendations in the selected category', () => {
     expect(filterByCategory(sampleRecommendations, 'restaurant')).toEqual([
       sampleRecommendations[0],
+      sampleRecommendations[3],
     ])
   })
 
@@ -137,8 +154,21 @@ describe('sortRecommendations', () => {
       sortRecommendations(sampleRecommendations).map(
         (recommendation) => recommendation.id,
       ),
-    ).toEqual(['must-go-lower-rating', 'high-rated', 'low-rated'])
+    ).toEqual([
+      'must-go-lower-rating',
+      'high-rated',
+      'low-rated',
+      'unrated',
+    ])
     expect(sampleRecommendations[0].id).toBe('low-rated')
+  })
+
+  it('places unrated recommendations after all rated recommendations', () => {
+    const sorted = sortRecommendations(sampleRecommendations)
+
+    expect(sorted.at(-1)?.id).toBe('unrated')
+    expect(sorted.slice(0, -1).every((item) => item.googleRating !== undefined))
+      .toBe(true)
   })
 })
 
@@ -147,12 +177,12 @@ describe('getRecommendationStats', () => {
     const stats = getRecommendationStats()
 
     expect(stats.countriesWithRecommendations).toBe(6)
-    expect(stats.destinationsCount).toBe(10)
-    expect(stats.recommendationsCount).toBe(113)
+    expect(stats.destinationsCount).toBe(11)
+    expect(stats.recommendationsCount).toBe(127)
     expect(stats.categories).toHaveLength(7)
     expect(stats.categories.reduce((total, category) => total + category.count, 0))
       .toBe(stats.recommendationsCount)
     expect(stats.categories.find(({ category }) => category === 'restaurant'))
-      .toMatchObject({ label: 'מסעדות', count: 34 })
+      .toMatchObject({ label: 'מסעדות', count: 36 })
   })
 })

@@ -30,6 +30,7 @@ export interface Destination {
   countryCode: string; // cca3 – מקשר למדינה מ-REST Countries
   intro?: string; // כמה מילים שלי על היעד – מוצג בעמוד היעד
   photos?: string[]; // מזהי תמונות (id) מתוך src/data/photos.ts – מוצגות בעמוד היעד
+  places?: string[]; // מקומות בתוך היעד – מוצגים בפס היעדים בסוגריים מרובעים, למשל: מקסיקו [טולום, קנקון]
 }
 
 export interface Recommendation {
@@ -37,7 +38,7 @@ export interface Recommendation {
   name: string;
   destinationId: string;
   category: Category;
-  googleRating: number; // הדירוג בגוגל מפס
+  googleRating?: number; // הדירוג בגוגל מפס (אופציונלי – המלצה במילים בלי מקום בגוגל מפס)
   mustGo?: boolean; // 👑 הסימון האישי שלי: "חובה". בלי הסימון = 👍 "שווה"
   note?: string;
 }
@@ -49,17 +50,31 @@ export const destinations: Destination[] = [
   { id: 'koh-phangan', name: 'קופנגן', nameEn: 'Koh Phangan', countryCode: 'THA', intro: '', photos: [] },
   { id: 'koh-tao', name: 'קו טאו', nameEn: 'Koh Tao', countryCode: 'THA', intro: '', photos: ['koh-phangan-snorkel', 'koh-phangan-beach', 'koh-phangan-road'] },
   { id: 'phuket', name: 'פוקט', nameEn: 'Phuket', countryCode: 'THA', intro: '', photos: [] },
-  { id: 'athens', name: 'אתונה', nameEn: 'Athens', countryCode: 'GRC', intro: '', photos: ['athens-acropolis'] },
-  { id: 'rhodes', name: 'רודוס', nameEn: 'Rhodes', countryCode: 'GRC', intro: '', photos: [] },
-  { id: 'corfu', name: 'קורפו', nameEn: 'Corfu', countryCode: 'GRC', intro: '', photos: ['corfu-cliffs'] },
+  { id: 'athens', name: 'אתונה', nameEn: 'Athens', countryCode: 'GRC', intro: `אתונה – יוון שמרגישה ממש ממש אירופה.\nביקרתי באתונה כבר פעמיים. בשונה מיעדים אחרים ביוון, מקבלים בה תחושה חזקה של אירופה.\nתמצאו כאן שופינג שווה ברמות ואוכל יווני טעים.\nאי אפשר שלא להגיע לאתר המפורסם – האקרופוליס.\nיש בעיר רופטופים מהממים, וטברנות שמגיעים אליהן כשהולכים לאיבוד בין הרחובות.\nשימו לב: מרכז העיר והחופים רחוקים זה מזה. אם רוצים חוף, כדאי להקדיש לזה יום, כי זה דורש נסיעה.\nגברים, היזהרו – השופינג שם ממש שווה, ויש את כל הרשתות המפורסמות (כולל סֶפוֹרה).\nממליצה לטיול עם חברות, עם חברה או עם המשפחה.`, photos: ['athens-acropolis'] },
+  { id: 'rhodes', name: 'רודוס', nameEn: 'Rhodes', countryCode: 'GRC', intro: `אחרי תקופת מבחנים הרגשתי שאני חייבת חופשת בטן-גב מפנקת, אז כרטסתי את עצמי לסופ"ש ברודוס.\nהמלון היה Ella Elissa – הכול כלול, למבוגרים בלבד, עם מסעדות ושפע של בריכות וברים. בגדול, לא צריך לצאת ממנו.\nכל בוקר פתחתי בתחביב האהוב עליי – טניס, עם מאמן מטעם המלון שתיאמתי מראש בתשלום, והיה מצוין.\nמשם חזרתי לחדר, שבו חיכה לי קפה קר שהחברות הזמינו לי, וקפצתי לבריכה.\nעוברים מקוקטייל לקוקטייל, ובין לבין שירות חדרים עד השעות הקטנות.\nיצאנו גם לטייל קצת בעיר – סטארבקס בשביל האווירה, ושופינג.\nטיול בנות כיפי ומהמם עם מלון מפנק. היה נדרש, ללא ספק!`, photos: [] },
+  { id: 'corfu', name: 'קורפו', nameEn: 'Corfu', countryCode: 'GRC', intro: `אם תחברו את יוון, את איטליה ואת הסטייל של תאילנד במים הכחולים – תקבלו את קורפו!\nהייתי טסה לשם עם בן זוג, אחות או חברות, כי באמת יש שם הכול מהכול.\nבקורפו תמצאו מסעדות יווניות וגם איטלקיות ברמה גבוהה, כאילו קפצתם לאיטליה – ואפילו מקום שמתמחה בטירמיסו.\nשגרת היום: חופים יפים וביץ' קלאבים, דרינקים ונשנוש קטן, מקלחת ושנ"צ, והתארגנות ליציאה בעיר העתיקה – שיש בה מסעדות וחנויות.\nחופים שאסור לפספס: La Grotta ו-Aragosta Beach Club (לקבוע מראש).\nמסעדה שאסור לפספס (חייבים לקבוע מראש): Nolita.\nלא הייתי משקיעה במלון, כי מטיילים כל היום בחוץ ויש המון מה לראות. חייבים להשכיר רכב – ממליצה על מריה מ-Corfu All Year, שירות ומחיר מעולים.\nיעד חלומי וקייצי – מומלץ בחום!`, photos: ['corfu-cliffs'] },
   // מקסיקו = יעד אחד: פלאיה דל כרמן, בקלאר, איסלה ופוארטו אסקונדידו. (id נשאר playa-del-carmen כדי לא לשבור את ההמלצות הקיימות)
-  { id: 'playa-del-carmen', name: 'מקסיקו', nameEn: 'Playa del Carmen', countryCode: 'MEX', intro: '', photos: [] },
-  { id: 'bansko', name: 'בנסקו', nameEn: 'Bansko', countryCode: 'BGR', intro: '', photos: ['bansko-aperol', 'bansko-slope'] },
-  { id: 'gudauri', name: 'גודאורי', nameEn: 'Gudauri', countryCode: 'GEO', intro: '', photos: ['gudauri-snowboard', 'gudauri-snow'] }, // סקי – ההמלצות בדרך
+  { id: 'playa-del-carmen', name: 'מקסיקו', nameEn: 'Playa del Carmen', countryCode: 'MEX', places: ['טולום', 'פוארטו אסקונדידו', 'סן כריסטובל', 'פלאיה דל כרמן', 'קוזומל', 'בקלאר', 'איסלה מוחרס', 'קנקון'], intro: `את מקסיקו תכננתי בקפידה, עם טבלת אקסל מתוכננת עד הפרט האחרון – ונחשו מה? הכול השתנה בדרך.\nאגיד מראש שישנתי בהוסטלים, כדי להוזיל וגם בשביל האווירה הצעירה, כי טסתי לבד.\n\nכרטסתי את עצמי לפי פסטיבל זאמנה, אז התחלתי בווילה בטולום – אווירה ומחיר שווים!\nמעבר לזאמנה, לא מצאתי את עצמי יותר מדי בטולום. הכרתי שם אנשים שעברו לצד הפסיפי, בטיסה לפוארטו אסקונדידו, והחלטתי לזרום ולכרטס את עצמי גם.\nתכננתי לטייל בעיקר בצד הקריבי – אבל פוארטו אסקונדידו הייתה הפתעת הטיול שלי. מי שמתחבר לאווירה של עיירת חוף קטנה – הגיע למקום הנכון.\nממליצה לסגור לינה קרובה לחוף ולעשות הכול ברגל. יש בתי קפה מעולים, ועוגת גזר שמוכרים על החוף לפני השקיעה.\n\nמשם עברתי לסן כריסטובל, לראות מפלים ונופים בטיול מאורגן דרך הקאסה של יגיל – כמו כל המטיילים הישראלים הצעירים. נופים מדהימים וחוויה מהממת.\n\nמשם חזרתי לצד הקריבי.\nפלאיה דל כרמן מזכירה קצת את אילת, רק משודרגת הרבה יותר: טיילת נחמדה, מסעדות וחיי לילה – יש המון מה לעשות.\nמשם מעבורת לקוזומל, שהייתה גן עדן קטן. ממליצה בחום על צלילה ושנורקלינג עם כוכבי ים – גוונים של כחול שלא ראיתם מעולם. נשארתי בקוזומל ארבעה ימים, והיה מושלם.\nמשם עברתי לבקלאר ליומיים קצרים, רק כדי להספיק סאפ בזריחה – חוויה בלתי נשכחת.\nומשם לאיסלה מוחרס (במעבורת מקנקון). איזה חוף, איזה חול לבן ומהפנט – וואו. איסלה קטנה ומהממת, וממליצה לא לוותר על השחייה עם כריש הלווייתן – חוויה של פעם בחיים.\nולקינוח – איך לא? מלון הכול כלול מפנק בקנקון ומסיבות בקוקו בונגו.\n\nממליצה על מקסיקו לטיול עם חברים שרוצים לחגוג ולראות נופים, וגם לזוגות – אפשר לקבל את מקסיקו גם על הצד הרגוע שלה.\nיעד חלומי!`, photos: [] },
+  { id: 'bansko', name: 'בנסקו', nameEn: 'Bansko', countryCode: 'BGR', intro: `כשהתחלתי לעשות סקי, המקום הראשון שכולם המליצו לי עליו היה בנסקו – וזה לא סתם.\nבטיול סקי אין יותר מדי אטרקציות מסביב: היום כולו עובר באתר הסקי, ובערב, למי שנשארו כוחות, יוצאים למסעדה בעיירה.\nהעיירה קטנה וחמודה. ממליצה לקחת לינה קרובה לאתר, או מלון שמציע הסעות כל בוקר וכל ערב בין אתר הסקי למלון.\nאתר הסקי בבנסקו נוח מאוד למתחילים. כמובן שחייבים לקחת הדרכה ולתאם אותה מראש.\nבאתר יש כמה נקודות לשבת, לשתות משהו וגם לאכול – וכשעושים סקי שעות, חייבים הפסקות, תאמינו לי.\nממליצה מאוד כחופשת סקי ראשונה, למי שלא רוצה להשקיע המון כסף ורוצה אתר נגיש וכיפי גם למתחילים.`, photos: ['bansko-aperol', 'bansko-slope'] },
+  { id: 'ibiza', name: 'איביזה', nameEn: 'Ibiza', countryCode: 'ESP', intro: `אם לא באתם לחגוג במסיבות – לא בטוח שמקומכם כאן.\nאם באתם לחגוג – הגעתם בדיוק למקום הנכון!\nאת איביזה תכננתי עם חבר. סגרנו הכול מראש, והיה לנו מושלם.\nממליצה לבדוק לפי התאריכים שלכם אילו מסיבות יש ומי מנגן.\nכל יום מסיבה, ובחלק מהימים אפילו שתיים – עם הדי־ג'ייז הכי מטורפים ומוכרים בעולם: מ-Black Coffee, דרך Martin Garrix ועד Mau P.\nחוגגים עד הבוקר, וקמים בצהריים לים או למסיבת בריכה.\nבאיביזה תמצאו את המסיבות הכי מטורפות בעולם.\nאה, ותכינו את הכיס, כן? מקווה שזה ברור.`, photos: ['ibiza-boardwalk', 'ibiza-beach-lunch', 'ibiza-paella', 'ibiza-beach', 'ibiza-scooter', 'ibiza-party-drinks', 'ibiza-party-1', 'ibiza-party-2', 'ibiza-party-3', 'ibiza-party-4'] },
+  { id: 'gudauri', name: 'גודאורי', nameEn: 'Gudauri', countryCode: 'GEO', intro: `גודאורי היה המקום הראשון שבו עשיתי סקי.\nהנסיעה משדה התעופה לאתר הסקי ארוכה ואפילו קצת קשה, כי זה ממש על הגבול – אבל שווה ברגע שמגיעים.\nבגודאורי אין יותר מדי מה לעשות בערב (אפילו לא מסעדות). זה באמת מקום של נטו סקי.\nממליצה לתאם הדרכה מראש (אני סגרתי עם מדריכים ישראלים, והיה לי יותר קליל).\nממליצה לסגור מלון עם ספא מפנק ובריכה מחוממת, כדי להתפנק בסוף היום.\nאני סגרתי את החופשה עם סקי דיל, אז זכיתי לחוות גם מסיבות ישראליות בערב – היה מרענן וכיף. הם יכולים לסגור לכם גם השכרת ציוד (בורד ונעליים).\nמומלץ למי שרוצה חופשה של סקי בלבד.`, photos: ['gudauri-snowboard', 'gudauri-snow'] }, // סקי – ההמלצות בדרך
 ];
 
 // מלל אישי לכל מדינה שאני ממליצה עליה – כמה מילים שמופיעות בראש אזור ההמלצות בעמוד המדינה.
 // המפתח הוא קוד המדינה (cca3). מדינה בלי טקסט (מחרוזת ריקה) פשוט לא מציגה את הקטע.
+
+// קבוצת יעדים: מוצגת בפס היעדים כפריט אחד – "תאילנד [קו טאו, קופנגן, בנגקוק]" – עם עמוד משותף.
+export interface DestinationGroup {
+  id: string;
+  name: string;
+  destinationIds: string[];
+  intro: string;
+}
+
+export const destinationGroups: DestinationGroup[] = [
+  { id: 'thailand', name: 'תאילנד', destinationIds: ['koh-tao', 'koh-phangan', 'bangkok'], intro: `וואו, תאילנד. איך גיליתי את היעד הזה רק בגיל 28?\nלפני הטיול עשיתי מחקר ארוך, וכל אחד אמר משהו אחר – אז אגיד מראש שכל דבר הוא אינדיבידואלי. אני אוהבת תחושת חופש, חופים, בטן-גב ובתי קפה, ופחות עיר ועומס.\n\nהתחלתי את הטיול בפוקט עם זוג חברים, והייתי בהלם. דמיינתי את תאילנד אחרת, והגעתי למקום צפוף ועמוס אנשים בפטונג.\nאחרי סוף השבוע שם נפרדתי מהחברים ועברתי לבד לקו טאו. המעבר היה ארוך אבל שווה כל רגע: טיסה מפוקט לקוסמוי, ומשם מעבורת שעוצרת בקופנגן וממשיכה לקו טאו.\n\nקו טאו – אי קטן קטן קטן ומהמם! התאהבתי בשנייה. החופים, המסעדות המקומיות, בתי הקפה, מופע הדראג המגניב, וכמובן המסאז'ים על החוף – וואו.\nולא לשכוח: סינבון ב-NUI, וסיור חופים עם שנורקלינג – עולם מתחת למים, חופים וצבעים שלא ראיתם בחיים.\n\nמקו טאו המשכתי לקופנגן ופגשתי שם חברה, אחרי ארבעה ימים שבהם טיילתי לבד והלכתי לכל מקום ברגל. אמרתי לעצמי: גם פה אלך ברגל.\nאחרי עשר דקות הליכה, כשכמעט נדרסתי חמש פעמים על ידי אופנועים ועליתי עליות שלא עליתי מימיי – החלטתי שבחיים לא עושה את זה שוב.\nמצד שני, האופנוע הפחיד אותי. הוא כלי התחבורה המרכזי שם, אבל כמות התאונות ניכרת – רואים הרבה אנשים מסתובבים עם תחבושות.\nאז החלטנו להשכיר רכב, וזו הייתה ההחלטה הכי טובה שלקחתי בטיול. כל בוקר נסענו לבית קפה אחר ולחוף אחר – פלמינגו, מליבו ביץ', סיקרט ביץ' ועוד מלא חופים מדהימים.\nקופנגן הוא המקום שבו תקבלו הכי הרבה תחושת חופש ושקט. יש גם מסיבות, והשגרה שם די ברורה. רוב הישראלים הצעירים אוהבים להישאר שם את רוב הזמן – חלק כדי לנוח, וחלק כדי לחגוג.\nמרוב שהתאהבתי בתחושת החופש ובמקום, החלטתי לוותר על קוסמוי ולהישאר עוד סוף שבוע.\nאת השבתות העברתי בבית חב"ד (אני שומרת שבת) – היה מפנק ונתן תחושה של בית. בקופנגן תמצאו גם מסעדות כשרות למי שמעוניין.\nולא לשכוח את המסאז' של הסגולות (ליד Relax Massage).\nבקיצור, אני הולכת לחזור לטיול רק בשביל קופנגן, אין לי ספק!\n\nמקופנגן המשכתי לבנגקוק, לסיום סיומת של הטיול – בעיקר קניונים, ועוד קניונים, ועוד קניונים, שהולכים בהם לאיבוד מרוב שהם ענקיים. יש גם מסעדות ורופטופים שווים, ושווקים שפשוט לא הספקתי.\n\nבקיצור, חפרתי – אבל תאילנד הייתה חוויה מטורפת, ואני כבר מתכננת את הטיול הבא שלי לשם.` },
+];
+
 export const countryIntros: Record<string, string> = {
   USA: '', // TODO: עדן – כמה מילים על ניו יורק
   HUN: '', // TODO: עדן – כמה מילים על הונגריה
@@ -186,7 +201,7 @@ export const recommendations: Recommendation[] = [
   { id: 'rovinia-beach', name: 'Rovinia Beach', destinationId: 'corfu', category: 'attraction', googleRating: 4.6 },
   { id: 'agios-spiridon', name: 'Agios Spiridon Beach', destinationId: 'corfu', category: 'attraction', googleRating: 4.4 },
   { id: 'alipa-port', name: 'Alipa Port', destinationId: 'corfu', category: 'attraction', googleRating: 4.5 },
-  { id: 'la-grotta-bar', name: 'La Grotta Bar', destinationId: 'corfu', category: 'nightlife', googleRating: 4.4 },
+  { id: 'la-grotta-bar', name: 'La Grotta Bar', destinationId: 'corfu', category: 'nightlife', googleRating: 4.4, mustGo: true },
   { id: 'sway-corfu', name: 'Sway Cocktail & Food Bar Corfu', destinationId: 'corfu', category: 'nightlife', googleRating: 4.4 },
 
   // ───────── פלאיה דל כרמן ─────────
@@ -206,4 +221,22 @@ export const recommendations: Recommendation[] = [
 
   // ───────── גודאורי (גאורגיה) ─────────
   // TODO: עדן תשלח את המקומות
+
+  // ───────── תוספות ─────────
+  { id: 'nolita-corfu', name: 'Nolita', destinationId: 'corfu', category: 'restaurant', googleRating: 4.0, mustGo: true, note: 'חייבים להזמין מקום מראש' },
+  { id: 'aragosta', name: 'Aragosta Beach Club', destinationId: 'corfu', category: 'nightlife', mustGo: true, note: 'ביץ\' קלאב בפלאיוקסטריצה – לקבוע מראש' },
+  { id: 'a-la-minute', name: 'Á La Minute by Di Santo', destinationId: 'corfu', category: 'cafe', googleRating: 4.6, note: 'המקום שמתמחה בטירמיסו' },
+  { id: 'nui-bakery', name: 'Nui Bakery', destinationId: 'koh-tao', category: 'cafe', googleRating: 4.4, mustGo: true, note: 'לא לוותר על הסינבון' },
+  { id: 'sairee-beach', name: 'Sairee Beach', destinationId: 'koh-tao', category: 'attraction', googleRating: 4.4 },
+  { id: 'cactus-cafe', name: 'Cactus Cafe & Beach Bar', destinationId: 'koh-tao', category: 'cafe', googleRating: 4.5 },
+  { id: 'blue-chair', name: 'Blue Chair', destinationId: 'koh-tao', category: 'restaurant', googleRating: 4.6 },
+  { id: 'cafe-art-midnight', name: 'Café Art & Midnight', destinationId: 'koh-tao', category: 'cafe', googleRating: 4.6 },
+  { id: 'olive-hideout', name: 'Olive Hideout', destinationId: 'koh-tao', category: 'cafe', googleRating: 4.9 },
+  { id: 'lotus-beach-bar', name: 'Lotus Beach Bar & Restaurant', destinationId: 'koh-tao', category: 'nightlife', googleRating: 4.7 },
+  { id: 'bans-diving-resort', name: "Ban's Diving Resort", destinationId: 'koh-tao', category: 'hotel', googleRating: 4.4 },
+  { id: 'malibu-beach', name: 'Malibu Beach', destinationId: 'koh-phangan', category: 'attraction', googleRating: 4.3 },
+  { id: 'pure-relax-massage', name: 'Pure Relax Massage & Spa', destinationId: 'koh-phangan', category: 'wellness', googleRating: 4.7, note: 'המסאז\' של הסגולות – ממש לידו' },
+
+  // ───────── תוספות ─────────
+  { id: 'ella-elissa', name: 'Ella Elissa', destinationId: 'rhodes', category: 'hotel', mustGo: true, note: 'הכול כלול, למבוגרים בלבד – אפשר לתאם מראש אימון טניס עם מאמן של המלון' },
 ];
