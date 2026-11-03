@@ -253,7 +253,7 @@ function HomePage({
           <defs>
             <linearGradient id="globe-gradient" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0%" stopColor="#78c5e8" />
-              <stop offset="100%" stopColor="#1769aa" />
+              <stop offset="100%" stopColor="#0b2a5b" />
             </linearGradient>
           </defs>
           <circle
@@ -261,7 +261,7 @@ function HomePage({
             cy="112"
             r="61"
             fill="url(#globe-gradient)"
-            stroke="#124f7d"
+            stroke="#0b2a5b"
             strokeWidth="3"
           />
           <path
@@ -272,19 +272,19 @@ function HomePage({
           <path
             d="M27 105C44 30 157 19 203 77c18 23 9 54-7 77"
             fill="none"
-            stroke="#1769aa"
+            stroke="#0b2a5b"
             strokeDasharray="5 8"
             strokeLinecap="round"
             strokeWidth="3"
           />
           <path
             d="m187 147 16 8-11 13-1-8-8-3Z"
-            fill="#1769aa"
+            fill="#0b2a5b"
             transform="rotate(-25 190 158)"
           />
           <path
             d="m188 149 18-21-3 15 13 7-25 3-9 12Z"
-            fill="#f08b45"
+            fill="#0b2a5b"
             stroke="#fff"
             strokeLinejoin="round"
             strokeWidth="2"
@@ -299,6 +299,13 @@ function HomePage({
           ))}
         </p>
       </section>
+
+      <p aria-label="היעדים שלנו" className="destination-strip" dir="rtl">
+        ניו יורק <span>•</span> בודפשט <span>•</span> בנגקוק <span>•</span> קו
+        טאו <span>•</span> פוקט <span>•</span> אתונה <span>•</span> רודוס
+        <span>•</span> קורפו <span>•</span> פלאיה דל כרמן <span>•</span> בנסקו
+        <span>•</span> גודאורי
+      </p>
 
       <section aria-label="תמונות מהטיולים" className="photo-strip">
         <div className="photo-strip-track">
@@ -326,6 +333,7 @@ function HomePage({
       >
         <header className="featured-recommendations-heading">
           <div>
+            <p className="eyebrow">המקומות שאהבתי</p>
             <h2 id="featured-recommendations-heading">
               המלצות מאחת שיודעת
             </h2>
@@ -394,6 +402,7 @@ function HomePage({
             strokeWidth="2"
           />
         </svg>
+        <p className="eyebrow">גלו מקומות חדשים</p>
         <h2 id="world-heading">סביב העולם</h2>
         <p>בחרו מדינה וגלו מה מחכה לכם בה</p>
         <button className="world-button" onClick={scrollToCountries} type="button">
@@ -413,6 +422,7 @@ function HomePage({
           aria-labelledby="countries-heading"
         >
           <header className="countries-heading">
+            <p className="eyebrow">בחרו את היעד הבא</p>
             <h2 id="countries-heading">כל מדינות העולם</h2>
             <p>חפשו מדינה או סננו לפי יבשת</p>
           </header>
@@ -476,7 +486,7 @@ function HomePage({
                   <h3>{country.name}</h3>
                   {recommendedCountryCodes.has(country.cca3) && (
                     <span aria-label="יש המלצות אישיות" className="country-star">
-                      ⭐
+                      ★
                     </span>
                   )}
                 </Link>
@@ -563,6 +573,7 @@ function CountryPage({
             aria-labelledby="recommendations-title"
             className="country-recommendations"
           >
+            <p className="eyebrow">מהשטח, באהבה</p>
             <h2 id="recommendations-title">המלצות מאחת שיודעת</h2>
             {countryIntro && <p className="country-intro">{countryIntro}</p>}
 
@@ -734,6 +745,7 @@ function AboutPage() {
       </header>
 
       <section aria-labelledby="about-purpose-heading" className="about-section">
+        <p className="eyebrow">הסיפור</p>
         <h2 id="about-purpose-heading">מה האתר?</h2>
         <p>
           Been There, Done That מחבר בין מידע שימושי על מדינות לבין המלצות
@@ -743,6 +755,7 @@ function AboutPage() {
       </section>
 
       <section aria-labelledby="about-audience-heading" className="about-section">
+        <p className="eyebrow">למי אנחנו כאן</p>
         <h2 id="about-audience-heading">למי האתר מיועד?</h2>
         <p>
           למטיילות ולמטיילים ישראלים שמתכננים טיול ורוצים למצוא במקום אחד גם
@@ -751,6 +764,7 @@ function AboutPage() {
       </section>
 
       <section aria-labelledby="about-tech-heading" className="about-section">
+        <p className="eyebrow">מאחורי הקלעים</p>
         <h2 id="about-tech-heading">ממה הוא בנוי?</h2>
         <ul className="technology-list">
           <li>
@@ -777,6 +791,7 @@ function AboutPage() {
       </section>
 
       <section aria-labelledby="about-stats-heading" className="about-section">
+        <p className="eyebrow">במספרים</p>
         <h2 id="about-stats-heading">המספרים שמאחורי ההמלצות</h2>
         <div className="stats-summary">
           <article className="stat-card">

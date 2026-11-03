@@ -1,10 +1,10 @@
 .site-header {
   position: relative;
-  z-index: 1;
+  z-index: 10;
   width: 100%;
   background: #fff;
-  color: #08060d;
-  box-shadow: 0 1px 5px rgb(0 0 0 / 10%);
+  color: #111318;
+  box-shadow: 0 1px 5px rgb(17 19 24 / 8%);
   text-align: start;
 }
 
@@ -36,37 +36,37 @@
 
 .menu-toggle:hover,
 .menu-toggle:focus-visible {
-  background: #f0f5f9;
+  background: #fafbfd;
 }
 
 .menu-toggle:focus-visible,
 .site-menu a:focus-visible {
-  outline: 2px solid #1769aa;
+  outline: 2px solid #0b2a5b;
   outline-offset: 2px;
 }
 
 .site-menu {
   position: absolute;
   top: 100%;
-  left: 16px;
+  inset-inline-start: 16px;
   display: grid;
   min-width: 230px;
   padding: 8px;
-  border: 1px solid #e5e4e7;
-  border-radius: 12px;
+  border: 1px solid #e6e8ec;
+  border-radius: 18px;
   background: #fff;
   box-shadow: 0 10px 24px rgb(0 0 0 / 12%);
 }
 
 .site-menu a {
   padding: 10px 12px;
-  border-radius: 8px;
-  color: #08060d;
+  border-radius: 12px;
+  color: #111318;
   text-decoration: none;
 }
 
 .site-menu a:hover {
-  background: #f0f5f9;
+  background: #fafbfd;
 }
 
 @media (max-width: 520px) {

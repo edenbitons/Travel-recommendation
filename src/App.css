@@ -3,7 +3,7 @@
   width: 100%;
   max-width: 1126px;
   margin: 0 auto;
-  padding: 72px 32px;
+  padding: 56px 32px;
 }
 
 .page-heading {
@@ -13,15 +13,14 @@
 .eyebrow {
   margin: 0 0 8px;
   color: var(--accent);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
 }
 
 .page-heading h1 {
   margin: 0;
   font-size: clamp(36px, 7vw, 56px);
-  letter-spacing: -0.04em;
 }
 
 .countries-page-title {
@@ -29,8 +28,7 @@
   color: var(--text-h);
   font-family: var(--heading);
   font-size: clamp(36px, 7vw, 56px);
-  font-weight: 500;
-  letter-spacing: -0.04em;
+  font-weight: 800;
 }
 
 .page-description {
@@ -41,8 +39,8 @@
 .home-hero {
   display: grid;
   justify-items: center;
-  gap: 10px;
-  margin: 0 auto 34px;
+  gap: 14px;
+  margin: 0 auto 24px;
   text-align: center;
 }
 
@@ -54,8 +52,13 @@
 
 .home-hero h1 {
   margin: 0;
-  font-size: clamp(32px, 6vw, 52px);
-  letter-spacing: -0.035em;
+  color: var(--text-h);
+  font-family: var(--brand);
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .home-tagline {
@@ -72,10 +75,29 @@
   line-height: 1.8;
 }
 
+.destination-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 10px;
+  max-width: 1000px;
+  margin: 0 auto 32px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.destination-strip span {
+  color: var(--text-h);
+}
+
 .photo-strip {
-  width: 100vw;
-  max-width: 100vw;
-  margin: 0 calc(50% - 50vw) 64px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 64px;
   overflow: hidden;
   direction: ltr;
 }
@@ -102,8 +124,13 @@
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--bg);
-  box-shadow: var(--shadow);
   text-align: start;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.travel-photo-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
 }
 
 .travel-photo-media {
@@ -156,8 +183,8 @@
   margin: 0 0 64px;
   padding: 32px 20px;
   border: 1px solid var(--border);
-  border-radius: 24px;
-  background: linear-gradient(145deg, #f8fcff, #eaf5fb);
+  border-radius: 18px;
+  background: var(--surface);
 }
 
 .world-globe {
@@ -180,7 +207,7 @@
   padding: 12px 24px;
   border: 0;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--text-h);
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -232,7 +259,7 @@
   min-height: 46px;
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 999px;
   background: var(--bg);
   color: var(--text-h);
   font: inherit;
@@ -242,17 +269,17 @@
 .recommendations-filter {
   min-height: 46px;
   padding: 8px 18px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--text-h);
   border-radius: 999px;
   background: var(--bg);
-  color: var(--accent);
+  color: var(--text-h);
   cursor: pointer;
   font: inherit;
   white-space: nowrap;
 }
 
 .recommendations-filter.is-active {
-  background: var(--accent);
+  background: var(--text-h);
   color: #fff;
 }
 
@@ -279,12 +306,12 @@
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: var(--bg);
+  background: #fff;
   color: inherit;
-  box-shadow: var(--shadow);
   text-decoration: none;
   transition:
     border-color 160ms ease,
+    box-shadow 160ms ease,
     transform 160ms ease;
 }
 
@@ -293,7 +320,7 @@
   width: 100%;
   max-width: 1126px;
   margin: 0 auto;
-  padding: 72px 32px;
+  padding: 56px 32px;
 }
 
 .simple-page h1 {
@@ -329,7 +356,8 @@
 .country-facts > div {
   padding: 16px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 18px;
+  background: #fff;
 }
 
 .country-facts dt {
@@ -383,9 +411,14 @@
   gap: 12px;
   padding: 18px;
   border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--bg);
+  border-radius: 18px;
+  background: #fff;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.recommendation-card:hover {
   box-shadow: var(--shadow);
+  transform: translateY(-2px);
 }
 
 .recommendation-card h4 {
@@ -422,9 +455,9 @@
   align-items: center;
   justify-content: center;
   padding: 9px 16px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--text-h);
   border-radius: 999px;
-  color: var(--accent);
+  color: var(--text-h);
   text-decoration: none;
 }
 
@@ -445,6 +478,9 @@
 
 .featured-recommendations {
   margin-bottom: 64px;
+  padding: 28px;
+  border-radius: 18px;
+  background: var(--surface);
   text-align: start;
 }
 
@@ -458,6 +494,10 @@
 
 .featured-recommendations-heading h2 {
   margin: 0 0 6px;
+}
+
+.featured-recommendations-heading .eyebrow {
+  margin-bottom: 4px;
 }
 
 .featured-recommendations-heading p,
@@ -485,16 +525,16 @@
 
 .category-filters button {
   padding: 9px 16px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--text-h);
   border-radius: 999px;
   background: var(--bg);
-  color: var(--accent);
+  color: var(--text-h);
   cursor: pointer;
   font: inherit;
 }
 
 .category-filters button.is-active {
-  background: var(--accent);
+  background: var(--text-h);
   color: #fff;
 }
 
@@ -575,7 +615,8 @@
   gap: 4px;
   padding: 14px 16px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 18px;
+  background: #fff;
 }
 
 .technology-list strong {
@@ -600,8 +641,9 @@
   gap: 4px;
   padding: 22px 14px;
   border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--accent-bg);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
   text-align: center;
 }
 
@@ -652,8 +694,9 @@
 }
 
 .country-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent-border);
+  transform: translateY(-2px);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
 }
 
 .country-flag {
@@ -683,7 +726,7 @@
   padding: 10px 20px;
   border: 0;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--text-h);
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -710,13 +753,38 @@
 }
 
 .country-star {
+  color: var(--accent);
   font-size: 15px;
   line-height: 1;
 }
 
 @media (max-width: 520px) {
   .countries-page {
-    padding: 48px 20px;
+    padding: 40px 18px;
+  }
+
+  .simple-page {
+    padding: 40px 18px;
+  }
+
+  .page-heading {
+    margin-bottom: 30px;
+  }
+
+  .home-hero h1 {
+    font-size: clamp(18px, 5vw, 24px);
+    letter-spacing: 0.2em;
+    overflow-wrap: anywhere;
+  }
+
+  .home-intro {
+    text-align: start;
+  }
+
+  .destination-strip {
+    gap: 3px 7px;
+    margin-bottom: 26px;
+    font-size: 13px;
   }
 
   .world-section {
@@ -729,11 +797,15 @@
   }
 
   .photo-strip {
+    width: calc(100% + 36px);
+    max-width: none;
+    margin-inline: -18px;
     margin-bottom: 48px;
   }
 
   .featured-recommendations {
     margin-bottom: 48px;
+    padding: 20px 14px;
   }
 
   .featured-recommendations-heading {
@@ -760,6 +832,17 @@
     padding: 16px 10px;
   }
 
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .gallery-grid .travel-photo-card figcaption {
+    flex-direction: column;
+    gap: 2px;
+    padding: 9px;
+  }
+
   .country-card h2 {
     font-size: 17px;
   }
@@ -771,7 +854,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .country-card,
-  .world-button {
+  .world-button,
+  .travel-photo-card,
+  .recommendation-card {
     transition: none;
   }
 
