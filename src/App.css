@@ -323,6 +323,104 @@
   margin-top: 40px;
 }
 
+.featured-recommendations {
+  margin-bottom: 64px;
+  text-align: start;
+}
+
+.featured-recommendations-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.featured-recommendations-heading h2 {
+  margin: 0 0 6px;
+}
+
+.featured-recommendations-heading p,
+.recommendation-count {
+  color: var(--text);
+}
+
+.all-recommendations-link {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.all-recommendations-link:hover {
+  text-decoration: underline;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 16px;
+}
+
+.category-filters button {
+  padding: 9px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+}
+
+.category-filters button.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.category-filters button:focus-visible,
+.all-recommendations-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.recommendation-count {
+  margin-bottom: 14px;
+  text-align: start;
+}
+
+.recommendations-page .recommendation-list {
+  margin-bottom: 48px;
+}
+
+.recommendation-card h3 {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+.recommendation-details {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.recommendation-details > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+
+.recommendation-details dt {
+  color: var(--text);
+}
+
+.recommendation-details dd {
+  margin: 0;
+  color: var(--text-h);
+}
+
 .country-card:hover {
   transform: translateY(-3px);
   border-color: var(--accent-border);
@@ -396,6 +494,15 @@
     padding: 24px 16px;
   }
 
+  .featured-recommendations {
+    margin-bottom: 48px;
+  }
+
+  .featured-recommendations-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .country-filters {
     align-items: stretch;
     flex-direction: column;
@@ -417,6 +524,10 @@
 
   .country-card h2 {
     font-size: 17px;
+  }
+
+  .recommendation-list {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

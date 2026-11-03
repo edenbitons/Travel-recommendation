@@ -6,8 +6,16 @@ import {
   CATEGORY_LABELS,
   countryIntros,
   destinations,
+  type Category,
 } from './data/recommendations'
-import { getMapsUrl, getRecommendationsByCountry } from './utils/recommendations'
+import {
+  filterByCategory,
+  getEnrichedRecommendations,
+  getMapsUrl,
+  getRecommendationsByCountry,
+  sortRecommendations,
+  type EnrichedRecommendation,
+} from './utils/recommendations'
 import {
   excludeCountries,
   filterCountriesByRegion,
@@ -29,6 +37,8 @@ const REGION_LABELS: Record<string, string> = {
   Oceania: 'אוקיאניה',
   Antarctic: 'אנטארקטיקה',
 }
+
+const RECOMMENDATION_CATEGORIES = Object.keys(CATEGORY_LABELS) as Category[]
 
 function CountriesStatus({
   isLoading,
@@ -60,6 +70,52 @@ function CountriesStatus({
   }
 
   return null
+}
+
+function RecommendationCard({
+  item,
+}: {
+  item: EnrichedRecommendation
+}) {
+  const { recommendation, destination, country } = item
+
+  return (
+    <article className="recommendation-card">
+      <h3>{recommendation.name}</h3>
+      <dl className="recommendation-details">
+        <div>
+          <dt>יעד</dt>
+          <dd>{destination.name}</dd>
+        </div>
+        <div>
+          <dt>מדינה</dt>
+          <dd>{country?.name ?? destination.countryCode}</dd>
+        </div>
+        <div>
+          <dt>קטגוריה</dt>
+          <dd>{CATEGORY_LABELS[recommendation.category]}</dd>
+        </div>
+        <div>
+          <dt>דירוג גוגל</dt>
+          <dd>⭐ {recommendation.googleRating}</dd>
+        </div>
+      </dl>
+      {recommendation.mustGo && (
+        <span className="must-go-label">חובה</span>
+      )}
+      {recommendation.note && (
+        <p className="recommendation-note">{recommendation.note}</p>
+      )}
+      <a
+        className="maps-link"
+        href={getMapsUrl(recommendation.name, destination.nameEn)}
+        rel="noreferrer"
+        target="_blank"
+      >
+        פתחי בגוגל מפס
+      </a>
+    </article>
+  )
 }
 
 function HomePage({
@@ -102,6 +158,19 @@ function HomePage({
 
     return sortCountriesByName(matchingRecommendations)
   }, [countries, onlyRecommended, searchTerm, selectedRegion])
+  const featuredRecommendations = useMemo(() => {
+    const enrichedRecommendations = getEnrichedRecommendations(countries)
+    const topRecommendations = sortRecommendations(
+      enrichedRecommendations.map(({ recommendation }) => recommendation),
+    ).slice(0, 4)
+
+    return topRecommendations.flatMap((recommendation) => {
+      const enriched = enrichedRecommendations.find(
+        (item) => item.recommendation.id === recommendation.id,
+      )
+      return enriched ? [enriched] : []
+    })
+  }, [countries])
 
   const scrollToCountries = () => {
     document.getElementById('countries')?.scrollIntoView({
@@ -118,6 +187,31 @@ function HomePage({
         <h1>מדינות העולם</h1>
         <p className="page-description">גלו את המדינות והיעדים שמחכים לכם</p>
       </header>
+
+      <section
+        aria-labelledby="featured-recommendations-heading"
+        className="featured-recommendations"
+      >
+        <header className="featured-recommendations-heading">
+          <div>
+            <h2 id="featured-recommendations-heading">
+              המלצות מאחת שיודעת
+            </h2>
+            <p>המקומות שכדאי להכיר</p>
+          </div>
+          <Link className="all-recommendations-link" to="/recommendations">
+            לכל ההמלצות
+          </Link>
+        </header>
+        <div className="recommendation-list">
+          {featuredRecommendations.map((item) => (
+            <RecommendationCard
+              item={item}
+              key={item.recommendation.id}
+            />
+          ))}
+        </div>
+      </section>
 
       <section aria-labelledby="world-heading" className="world-section">
         <svg
@@ -412,6 +506,76 @@ function SimplePage({ title }: { title: string }) {
   )
 }
 
+function RecommendationsPage({ countries }: { countries: Country[] }) {
+  const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>(
+    'all',
+  )
+  const enrichedRecommendations = useMemo(
+    () => getEnrichedRecommendations(countries),
+    [countries],
+  )
+  const visibleRecommendations = useMemo(() => {
+    const filtered = filterByCategory(
+      enrichedRecommendations.map(({ recommendation }) => recommendation),
+      selectedCategory,
+    )
+    const sorted = sortRecommendations(filtered)
+
+    return sorted.flatMap((recommendation) => {
+      const enriched = enrichedRecommendations.find(
+        (item) => item.recommendation.id === recommendation.id,
+      )
+      return enriched ? [enriched] : []
+    })
+  }, [enrichedRecommendations, selectedCategory])
+
+  return (
+    <main className="simple-page recommendations-page" dir="rtl">
+      <header className="page-heading">
+        <p className="eyebrow">Been There, Done That</p>
+        <h1>המלצות מאחת שיודעת</h1>
+        <p className="page-description">
+          המקומות שאהבתי, עם דירוגים וטיפים אישיים
+        </p>
+      </header>
+
+      <div aria-label="סינון לפי קטגוריה" className="category-filters">
+        <button
+          aria-pressed={selectedCategory === 'all'}
+          className={selectedCategory === 'all' ? 'is-active' : ''}
+          onClick={() => setSelectedCategory('all')}
+          type="button"
+        >
+          הכל
+        </button>
+        {RECOMMENDATION_CATEGORIES.map((category) => (
+          <button
+            aria-pressed={selectedCategory === category}
+            className={selectedCategory === category ? 'is-active' : ''}
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            type="button"
+          >
+            {CATEGORY_LABELS[category]}
+          </button>
+        ))}
+      </div>
+
+      <p className="recommendation-count" aria-live="polite">
+        {visibleRecommendations.length} המלצות
+      </p>
+      <div className="recommendation-list">
+        {visibleRecommendations.map((item) => (
+          <RecommendationCard
+            item={item}
+            key={item.recommendation.id}
+          />
+        ))}
+      </div>
+    </main>
+  )
+}
+
 function App() {
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -487,7 +651,7 @@ function App() {
         />
         <Route
           path="/recommendations"
-          element={<SimplePage title="המלצות מאחת שיודעת" />}
+          element={<RecommendationsPage countries={countries} />}
         />
         <Route path="/about" element={<SimplePage title="אודות הפרויקט" />} />
         <Route path="/gallery" element={<SimplePage title="תמונות" />} />
