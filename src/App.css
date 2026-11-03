@@ -29,6 +29,120 @@
   color: var(--text);
 }
 
+.world-section {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin: 0 0 64px;
+  padding: 32px 20px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: linear-gradient(145deg, #f8fcff, #eaf5fb);
+}
+
+.world-globe {
+  width: min(220px, 60vw);
+  height: auto;
+}
+
+.world-section h2,
+.countries-heading h2 {
+  margin: 0;
+}
+
+.world-section p,
+.countries-heading p {
+  color: var(--text);
+}
+
+.world-button {
+  margin-top: 8px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  transition: filter 160ms ease;
+}
+
+.world-button:hover {
+  filter: brightness(0.9);
+}
+
+.world-button:focus-visible,
+.recommendations-filter:focus-visible,
+.country-filters input:focus-visible,
+.country-filters select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.countries-section {
+  scroll-margin-top: 24px;
+}
+
+.countries-heading {
+  margin-bottom: 24px;
+}
+
+.country-filters {
+  display: flex;
+  align-items: end;
+  gap: 14px;
+  margin-bottom: 28px;
+  text-align: start;
+}
+
+.country-search,
+.region-filter {
+  display: grid;
+  flex: 1 1 220px;
+  gap: 6px;
+  color: var(--text-h);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.country-filters input,
+.country-filters select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-weight: 400;
+}
+
+.recommendations-filter {
+  min-height: 46px;
+  padding: 8px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+}
+
+.recommendations-filter.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.empty-countries {
+  padding: 32px 16px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  color: var(--text);
+}
+
 .country-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -121,9 +235,35 @@
   font-size: 21px;
 }
 
+.country-card h3 {
+  margin: 0;
+  color: var(--text-h);
+  font-size: 19px;
+  font-weight: 500;
+}
+
+.country-star {
+  font-size: 15px;
+  line-height: 1;
+}
+
 @media (max-width: 520px) {
   .countries-page {
     padding: 48px 20px;
+  }
+
+  .world-section {
+    margin-bottom: 48px;
+    padding: 24px 16px;
+  }
+
+  .country-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .recommendations-filter {
+    align-self: flex-start;
   }
 
   .country-grid {
@@ -142,7 +282,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .country-card {
+  .country-card,
+  .world-button {
     transition: none;
   }
 

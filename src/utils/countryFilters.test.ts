@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { Country } from '../types'
 import {
+  EXCLUDED_COUNTRIES,
+  excludeCountries,
+  filterCountriesWithRecommendations,
   filterCountriesByRegion,
   searchCountriesByName,
   sortCountriesByName,
@@ -87,5 +90,38 @@ describe('sortCountriesByName', () => {
       'Greece',
       'Hungary',
     ])
+  })
+})
+
+describe('filterCountriesWithRecommendations', () => {
+  it('keeps only countries that have a destination recommendation', () => {
+    expect(
+      filterCountriesWithRecommendations(countries, [
+        { countryCode: 'GRC' },
+        { countryCode: 'THA' },
+      ]),
+    ).toEqual([countries[0], countries[1]])
+  })
+
+  it('returns an empty list when no destinations are provided', () => {
+    expect(filterCountriesWithRecommendations(countries, [])).toEqual([])
+  })
+})
+
+describe('excludeCountries', () => {
+  it('excludes configured countries without mutating the input', () => {
+    const countriesWithExcluded = [
+      ...countries,
+      {
+        ...countries[1],
+        cca2: 'PS',
+        cca3: 'PSE',
+        name: 'Palestine',
+      },
+    ]
+
+    expect(EXCLUDED_COUNTRIES).toContain('PSE')
+    expect(excludeCountries(countriesWithExcluded)).toEqual(countries)
+    expect(countriesWithExcluded).toHaveLength(4)
   })
 })

@@ -13,8 +13,10 @@
 מידע על מדינות יש בכל מקום, והמלצות יש בגוגל מפס. אבל אין מקום אחד שבו רואים את שניהם ביחד, ממקור אישי שאפשר לסמוך עליו.
 
 ## מקור המידע
-- **API:** REST Countries, ציבורי, חינמי ובלי מפתח:
-  `https://restcountries.com/v3.1/all?fields=name,flags,capital,currencies,languages,region,cca3,population`
+- **API:** מאגר המדינות `mledoze/countries` (המאגר ש-REST Countries היה בנוי עליו), מוגש דרך jsDelivr. הוא ציבורי, חינמי ובלי מפתח:
+  `https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json`
+  - תמונות הדגלים מגיעות מ-FlagCDN, גם הוא בלי מפתח: `https://flagcdn.com/w320/{cca2}.png`
+  - **למה לא REST Countries:** בזמן העבודה התברר שהגרסאות הישנות שלו נסגרו, ושגרסה 5 דורשת הרשמה ומפתח API. זה סותר את דרישת המטלה.
 - **המלצות:** קובץ `src/data/recommendations.ts` מוקלד, עם 113 המלצות מתוך הרשימות השמורות שלי בגוגל מפס. ההמלצות מחולקות ל-11 יעדים ב-7 מדינות: ארה״ב (ניו יורק), הונגריה (בודפשט), תאילנד (בנגקוק, קופנגן, פוקט), יוון (אתונה, רודוס, קורפו), מקסיקו (פלאיה דל כרמן), בולגריה (בנסקו) וגאורגיה (גודאורי, סקי).
   - כל יעד מקושר למדינה לפי קוד `cca3`.
   - לכל המלצה יש קטגוריה, טיפ אישי (איפה שיש) ו**שני דירוגים**: דירוג גוגל (⭐ 4.7), שמראה מה אנשים חושבים, והסימון האישי שלי, **חובה** או **שווה**.
@@ -36,7 +38,7 @@
 | נתיב | עמוד | מה יש בו |
 |---|---|---|
 | `/` | בית | המקטעים שלמעלה. "סביב העולם" בתפריט גולל לרשימת המדינות |
-| `/countries/:code` | עמוד מדינה (פרטים, detail) | בירה, מטבע, שפה, אוכלוסייה. מתחת: כמה מילים אישיות שלי על המדינה, ואחריהן ההמלצות לפי יעד וקטגוריה |
+| `/countries/:code` | עמוד מדינה (פרטים, detail) | בירה, מטבע, שפה, שטח. מתחת: כמה מילים אישיות שלי על המדינה, ואחריהן ההמלצות לפי יעד וקטגוריה |
 | `/recommendations` | המלצות מאחת שיודעת (עמוד נוסף 1) | כל ההמלצות, עם סינון לפי קטגוריה. "חובה" קודם, ואחר כך לפי דירוג גוגל |
 | `/about` | אודות הפרויקט (עמוד נוסף 2) | מה האתר, ממה הוא בנוי (React, API, נתונים), וסטטיסטיקה: כמה מדינות, כמה המלצות, פילוח לפי קטגוריה |
 | `/gallery` | תמונות (עמוד נוסף 3) | גלריית התמונות שלי מהטיולים |
@@ -49,7 +51,7 @@
 3. When I click "לחצו למידע אודות כלל המדינות", the page scrolls to the countries list. I see a loading indicator, then a card for every country with its flag and name.
 4. When I type in the search box, I see only countries whose name contains the text, and an empty-state message if none match.
 5. When I click "רק עם המלצות", I see only the countries I have recommendations for, each marked with ⭐.
-6. When I click a country card, I go to `/countries/<code>` and see its capital, currency, languages and population, my personal text about it, and my recommendations grouped by destination (or a "עוד לא הייתי כאן" message).
+6. When I click a country card, I go to `/countries/<code>` and see its capital, currency, languages and area, my personal text about it, and my recommendations grouped by destination (or a "עוד לא הייתי כאן" message).
 7. When the API fails, I see a clear error message with a "נסו שוב" button instead of a blank page.
 8. When I open `/recommendations` and pick a category, I see only recommendations from that category, my "חובה" picks first, then by Google rating.
 
