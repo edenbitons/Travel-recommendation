@@ -26,7 +26,7 @@
 
 ## מבנה האתר
 
-**בכל העמודים:** פס עליון לבן, ובו "בס"ד" בקטן מימין ותפריט ☰ משמאל, שנפתח מתחתיו בצד שמאל. בתפריט יש: בית, המלצות מאחת שיודעת, תמונות, אודות הפרויקט.
+**בכל העמודים:** פס עליון לבן, ובו "בס"ד" בקטן מימין ותפריט ☰ משמאל, שנפתח מתחתיו בצד שמאל. בתפריט יש: בית, המלצות מאחת שיודעת, מועדפים, תמונות, אודות הפרויקט.
 
 **דף הבית (`/`), מלמעלה למטה:**
 1. **פס לבן:** שם האתר BEEN THERE | DONE THAT, ומתחתיו "המלצות מאחת שיודעת".
@@ -43,12 +43,14 @@
 | `/recommendations` | המלצות מאחת שיודעת (עמוד נוסף 1) | כל ההמלצות, עם סינון לפי קטגוריה. "חובה" קודם, ואחר כך לפי דירוג גוגל |
 | `/about` | אודות הפרויקט (עמוד נוסף 2) | מה האתר, ממה הוא בנוי (React, API, נתונים), וסטטיסטיקה: כמה מדינות, כמה המלצות, פילוח לפי קטגוריה |
 | `/gallery` | תמונות (עמוד נוסף 3) | גלריית התמונות שלי מהטיולים |
+| `/favorites` | מועדפים (בונוס) | ההמלצות ששמרתי עם ♡, נשמרות ב-`localStorage` |
+| כל כתובת אחרת | 404 (בונוס) | "העמוד לא נמצא" וקישור לדף הבית |
 
 **עיצוב:** קו נקי בשחור, לבן ואפור, עם פס בז' אחד וכדור ארץ בכחול דהוי. מקטעים מתחלפים ברקע לבן ואפור בהיר, קווים שחורים דקים מתחת לכותרות, ותמונות וכרטיסים מרובעים (בלי פינות מעוגלות). שם האתר בגופן Montserrat, באותיות גדולות ומרווחות. כותרות בגופן Rubik וטקסט בגופן Heebo. האתר בעברית, מימין לשמאל, ועובד גם בטלפון.
 
 ## שורות קבלה
 1. When I open the home page, I see the site name, a short text about me, and a strip of my photos that moves by itself and pauses when I hover over it.
-2. When I click the ☰ button, I see a menu under it on the left with בית, המלצות מאחת שיודעת, תמונות and אודות הפרויקט, and each item takes me to its place.
+2. When I click the ☰ button, I see a menu under it on the left with בית, המלצות מאחת שיודעת, מועדפים, תמונות and אודות הפרויקט, and each item takes me to its place.
 3. When I scroll to "סביב העולם", I see a spinning globe that I can turn by dragging it. While the countries load I see a loading indicator, then a search box and five example country cards with flag and name.
 4. When I type in the search box, I see only countries whose name contains the text, and an empty-state message if none match.
 5. When I click "רק עם המלצות", I see only the countries I have recommendations for, each marked with ⭐.
@@ -62,6 +64,7 @@
 - עריכת המלצות דרך האתר: ההמלצות נכתבות בקובץ הנתונים.
 - העלאת תמונות דרך האתר: את התמונות מוסיפים לתיקייה `public/photos`.
 
-## בונוס (אם יישאר זמן)
-- מועדפים שנשמרים ב-`localStorage`.
+## בונוס (בוצע)
+- מועדפים שנשמרים ב-`localStorage`: כפתור ♡ בכל המלצה, ועמוד `/favorites` (מועדפים) בתפריט.
 - עמוד 404 לכתובת שלא קיימת.
+- בדיקות לרכיבים עם React Testing Library: התפריט, עמוד ה-404 וכפתור המועדפים.

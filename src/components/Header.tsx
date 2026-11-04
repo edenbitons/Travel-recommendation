@@ -5,6 +5,7 @@ import './Header.css'
 const menuItems = [
   { label: 'בית', to: '/' },
   { label: 'המלצות מאחת שיודעת', to: '/recommendations' },
+  { label: 'מועדפים', to: '/favorites' },
   { label: 'תמונות', to: '/gallery' },
   { label: 'אודות הפרויקט', to: '/about' },
 ]

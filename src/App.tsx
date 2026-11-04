@@ -30,6 +30,10 @@ import {
   sortCountriesByName,
 } from './utils/countryFilters'
 import Header from './components/Header'
+import FavoriteButton from './components/FavoriteButton'
+import FavoritesProvider from './components/FavoritesProvider'
+import NotFoundPage from './components/NotFoundPage'
+import { useFavorites } from './components/useFavorites'
 import './App.css'
 
 const COUNTRIES_API_URL =
@@ -120,7 +124,10 @@ function RecommendationCard({
 
   return (
     <article className="recommendation-card">
-      <h3>{recommendation.name}</h3>
+      <div className="recommendation-card-top">
+        <h3>{recommendation.name}</h3>
+        <FavoriteButton id={recommendation.id} name={recommendation.name} />
+      </div>
       <dl className="recommendation-details">
         <div>
           <dt>יעד</dt>
@@ -1055,6 +1062,39 @@ function GalleryPage() {
   )
 }
 
+function FavoritesPage({ countries }: { countries: Country[] }) {
+  const { favorites } = useFavorites()
+  const favoriteRecommendations = getEnrichedRecommendations(countries).filter(
+    (item) => favorites.includes(item.recommendation.id),
+  )
+
+  return (
+    <main className="simple-page favorites-page" dir="rtl">
+      <header className="page-heading">
+        <p className="eyebrow">Been There, Done That</p>
+        <h1>המועדפים שלי</h1>
+        <p className="page-description">
+          ההמלצות ששמרתם עם ♡. הן נשמרות בדפדפן גם אחרי רענון.
+        </p>
+      </header>
+      {favoriteRecommendations.length === 0 ? (
+        <p className="empty-countries" role="status">
+          עוד לא שמרתם מועדפים. לחצו על ♡ ליד המלצה כדי לשמור אותה.
+        </p>
+      ) : (
+        <div className="recommendation-list">
+          {favoriteRecommendations.map((item) => (
+            <RecommendationCard item={item} key={item.recommendation.id} />
+          ))}
+        </div>
+      )}
+      <Link className="all-recommendations-link" to="/recommendations">
+        לכל ההמלצות
+      </Link>
+    </main>
+  )
+}
+
 function AboutPage() {
   const stats = getRecommendationStats()
   const maximumCategoryCount = Math.max(
@@ -1222,7 +1262,7 @@ function App() {
   const retry = () => setRetryCount((count) => count + 1)
 
   return (
-    <>
+    <FavoritesProvider>
       <Header />
       <Routes>
         <Route
@@ -1257,8 +1297,13 @@ function App() {
         />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/gallery" element={<GalleryPage />} />
+        <Route
+          path="/favorites"
+          element={<FavoritesPage countries={countries} />}
+        />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </>
+    </FavoritesProvider>
   )
 }
 
