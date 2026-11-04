@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Route, Routes, useParams } from 'react-router-dom'
 import type { Country } from './types'
 import { mapCountries } from './utils/countries'
@@ -196,11 +196,170 @@ function TravelPhotoCard({
 
 const homeIntroduction = [
   'אם אתם מתכננים טיול ונמאס לכם לחפש המלצות כל היום – הגעתם למקום הנכון.',
-  'אני עדן. אחרי עשר שנים של שירות אינטנסיבי, יצאתי לשנתיים של חופש.',
+  'אני עדן, אחרי עשר שנים של שירות אינטנסיבי, יצאתי לשנתיים של חופש.',
   'הבטחתי לעצמי שבשנתיים האלה אנצל כל רגע ואבקר בכל מקום שחלמתי להיות בו.',
-  'רציתי שכל טיול יהיה מושלם, שלא אפספס אף מסעדה שווה ואף אטרקציה – אז חקרתי וחקרתי וחקרתי, וגיליתי שהרבה המלצות כבר ישנות ולא רלוונטיות.',
+  'רציתי שכל טיול יהיה מושלם, שלא אפספס אף מסעדה שווה ואף אטרקציה –',
+  'אז חקרתי וחקרתי וגיליתי שהרבה המלצות לא רלוונטיות וישנות, ושאני פשוט מבזבזת על זה שעות.',
   'אז אני כאן כדי לגלות לכם את ההמלצות הכי שוות לטיול הבא שלכם!',
 ]
+
+// מדינות לדוגמה מתחת לחיפוש: שלוש שעוד לא הייתי בהן ושתיים שהייתי
+const SAMPLE_COUNTRY_CODES = ['JPN', 'ITA', 'BRA', 'GRC', 'THA']
+
+const GLOBE_TURN = 184
+
+function InteractiveGlobe() {
+  const landRef = useRef<SVGGElement>(null)
+
+  useEffect(() => {
+    const land = landRef.current
+    const svg = land?.ownerSVGElement
+    if (!land || !svg) {
+      return
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    const autoSpeed = prefersReducedMotion ? 0 : 0.012
+    let offset = 0
+    let velocity = autoSpeed
+    let isDragging = false
+    let lastX = 0
+    let lastTime = performance.now()
+    let frame = 0
+
+    const tick = (now: number) => {
+      const elapsed = now - lastTime
+      lastTime = now
+      if (!isDragging) {
+        velocity += (autoSpeed - velocity) * Math.min(1, elapsed / 900)
+        offset += velocity * elapsed
+      }
+      offset = ((offset % GLOBE_TURN) + GLOBE_TURN) % GLOBE_TURN
+      land.setAttribute('transform', `translate(${offset} -4)`)
+      frame = requestAnimationFrame(tick)
+    }
+
+    const onPointerDown = (event: PointerEvent) => {
+      isDragging = true
+      lastX = event.clientX
+      svg.setPointerCapture(event.pointerId)
+      svg.classList.add('is-dragging')
+    }
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (!isDragging) {
+        return
+      }
+      const scale = 240 / svg.getBoundingClientRect().width
+      const distance = (event.clientX - lastX) * scale
+      offset += distance
+      velocity = distance / 16
+      lastX = event.clientX
+    }
+
+    const onPointerUp = () => {
+      isDragging = false
+      svg.classList.remove('is-dragging')
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUp)
+    svg.addEventListener('pointercancel', onPointerUp)
+    frame = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      svg.removeEventListener('pointerdown', onPointerDown)
+      svg.removeEventListener('pointermove', onPointerMove)
+      svg.removeEventListener('pointerup', onPointerUp)
+      svg.removeEventListener('pointercancel', onPointerUp)
+    }
+  }, [])
+
+  return (
+    <svg
+      aria-labelledby="globe-title globe-description"
+      className="world-globe"
+      role="img"
+      viewBox="0 0 240 240"
+    >
+      <title id="globe-title">כדור הארץ</title>
+      <desc id="globe-description">
+        כדור ארץ מסתובב. אפשר לגרור אותו כדי לסובב אותו.
+      </desc>
+      <defs>
+        <radialGradient id="globe-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="78%" stopColor="#8fa6b8" stopOpacity=".35" />
+          <stop offset="100%" stopColor="#8fa6b8" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="globe-ocean" cx="36%" cy="30%" r="75%">
+          <stop offset="0%" stopColor="#a9bccb" />
+          <stop offset="45%" stopColor="#6a8499" />
+          <stop offset="100%" stopColor="#34495c" />
+        </radialGradient>
+        <radialGradient id="globe-shade" cx="50%" cy="50%" r="50%">
+          <stop offset="55%" stopColor="#1f2a36" stopOpacity="0" />
+          <stop offset="100%" stopColor="#1f2a36" stopOpacity=".45" />
+        </radialGradient>
+        <radialGradient id="globe-shine" cx="34%" cy="26%" r="40%">
+          <stop offset="0%" stopColor="#fff" stopOpacity=".4" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <clipPath id="globe-clip">
+          <circle cx="120" cy="116" r="92" />
+        </clipPath>
+      </defs>
+      <ellipse cx="120" cy="228" rx="70" ry="7" fill="#34495c" opacity=".18" />
+      <circle cx="120" cy="116" r="108" fill="url(#globe-glow)" />
+      <circle cx="120" cy="116" r="92" fill="url(#globe-ocean)" />
+      <g clipPath="url(#globe-clip)">
+        <g ref={landRef} transform="translate(0 -4)">
+          <g opacity=".95">
+            <path
+              d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
+              fill="#efe8da"
+            />
+            <path
+              d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
+              fill="#efe8da"
+            />
+            <path
+              d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
+              fill="#efe8da"
+            />
+            <path
+              d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
+              fill="#efe8da"
+            />
+          </g>
+          <g opacity=".95" transform="translate(-184 0)">
+            <path
+              d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
+              fill="#efe8da"
+            />
+            <path
+              d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
+              fill="#efe8da"
+            />
+            <path
+              d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
+              fill="#efe8da"
+            />
+            <path
+              d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
+              fill="#efe8da"
+            />
+          </g>
+        </g>
+        <circle cx="120" cy="116" r="92" fill="url(#globe-shade)" />
+        <circle cx="120" cy="116" r="92" fill="url(#globe-shine)" />
+      </g>
+    </svg>
+  )
+}
 
 function HomePage({
   countries,
@@ -264,62 +423,49 @@ function HomePage({
     })
   }, [countries])
 
+  const sampleCountries = useMemo(
+    () =>
+      SAMPLE_COUNTRY_CODES.flatMap((code) => {
+        const country = countries.find((item) => item.cca3 === code)
+        return country ? [country] : []
+      }),
+    [countries],
+  )
+
+  const renderCountryCard = (country: Country) => (
+    <Link
+      className="country-card"
+      key={country.cca3}
+      to={`/countries/${country.cca3}`}
+    >
+      <img
+        alt={`דגל ${country.name}`}
+        className="country-flag"
+        height="48"
+        loading="lazy"
+        src={country.flagUrl}
+        width="64"
+      />
+      <h3>{country.name}</h3>
+      {recommendedCountryCodes.has(country.cca3) && (
+        <span aria-label="יש המלצות אישיות" className="country-star">
+          ★
+        </span>
+      )}
+    </Link>
+  )
+
   const isSearching =
     searchTerm.trim() !== '' || selectedRegion !== '' || onlyRecommended
 
   return (
     <main className="countries-page" dir="rtl">
       <section aria-labelledby="home-title" className="home-hero">
-        <svg
-          aria-labelledby="travel-logo-title"
-          className="travel-logo"
-          role="img"
-          viewBox="0 0 240 210"
-        >
-          <title id="travel-logo-title">כדור ארץ עם מסלול טיסה</title>
-          <defs>
-            <linearGradient id="globe-gradient" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stopColor="#78c5e8" />
-              <stop offset="100%" stopColor="#0b2a5b" />
-            </linearGradient>
-          </defs>
-          <circle
-            cx="120"
-            cy="112"
-            r="61"
-            fill="url(#globe-gradient)"
-            stroke="#0b2a5b"
-            strokeWidth="3"
-          />
-          <path
-            d="M92 65 108 70 114 82 106 91 94 88 86 99 72 92 70 79ZM122 62 142 67 152 81 145 91 131 88 123 99 112 89ZM116 103 132 98 144 106 140 119 148 132 135 151 126 165 117 151 119 135 108 124Z"
-            fill="#f3fbff"
-            opacity=".95"
-          />
-          <path
-            d="M27 105C44 30 157 19 203 77c18 23 9 54-7 77"
-            fill="none"
-            stroke="#0b2a5b"
-            strokeDasharray="5 8"
-            strokeLinecap="round"
-            strokeWidth="3"
-          />
-          <path
-            d="m187 147 16 8-11 13-1-8-8-3Z"
-            fill="#0b2a5b"
-            transform="rotate(-25 190 158)"
-          />
-          <path
-            d="m188 149 18-21-3 15 13 7-25 3-9 12Z"
-            fill="#0b2a5b"
-            stroke="#fff"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-          <circle cx="120" cy="112" r="73" fill="none" stroke="#d4eaf6" strokeWidth="2" />
-        </svg>
-        <h1 id="home-title">Been There, Done That</h1>
-        <p className="home-tagline">המלצות זהב מאחת שהייתה שם</p>
+        <h1 id="home-title">Been There | Done That</h1>
+        <p className="home-tagline">המלצות מאחת שיודעת</p>
+      </section>
+
+      <section aria-label="קצת עליי" className="home-about">
         <p className="home-intro">
           {homeIntroduction.map((sentence) => (
             <span key={sentence}>{sentence}</span>
@@ -327,30 +473,58 @@ function HomePage({
         </p>
       </section>
 
-      <p aria-label="היעדים שלנו" className="destination-strip" dir="rtl">
-        {destinationNavigationItems.map((item, index) => {
-          const itemPlaces = isDestinationGroup(item)
-            ? item.destinationIds.flatMap((id) => {
-                const destination = destinations.find(
-                  (entry) => entry.id === id,
-                )
-                return destination ? [destination.name] : []
-              })
-            : item.places
-
-          return (
-            <span className="destination-strip-item" key={item.id}>
-              {index > 0 && <span aria-hidden="true">•</span>}
-              <Link to={`/destinations/${item.id}`}>
-                {item.name}
-                {itemPlaces && itemPlaces.length > 0 && (
-                  <> [{itemPlaces.join(', ')}]</>
-                )}
-              </Link>
-            </span>
-          )
-        })}
-      </p>
+      <section aria-labelledby="photos-heading" className="home-photos">
+          <svg
+            aria-labelledby="travel-logo-title"
+            className="travel-logo"
+            role="img"
+            viewBox="0 0 240 210"
+          >
+            <title id="travel-logo-title">כדור ארץ עם מסלול טיסה</title>
+            <defs>
+              <linearGradient id="globe-gradient" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="100%" stopColor="#ffffff" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="120"
+              cy="112"
+              r="61"
+              fill="url(#globe-gradient)"
+              stroke="#111318"
+              strokeWidth="3"
+            />
+            <path
+              d="M92 65 108 70 114 82 106 91 94 88 86 99 72 92 70 79ZM122 62 142 67 152 81 145 91 131 88 123 99 112 89ZM116 103 132 98 144 106 140 119 148 132 135 151 126 165 117 151 119 135 108 124Z"
+              fill="#111318"
+              opacity=".95"
+            />
+            <path
+              d="M27 105C44 30 157 19 203 77c18 23 9 54-7 77"
+              fill="none"
+              stroke="#111318"
+              strokeDasharray="5 8"
+              strokeLinecap="round"
+              strokeWidth="3"
+            />
+            <path
+              d="m187 147 16 8-11 13-1-8-8-3Z"
+              fill="#111318"
+              transform="rotate(-25 190 158)"
+            />
+            <path
+              d="m188 149 18-21-3 15 13 7-25 3-9 12Z"
+              fill="#111318"
+              stroke="#fff"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            />
+            <circle cx="120" cy="112" r="73" fill="none" stroke="#c9cbd0" strokeWidth="2" />
+          </svg>
+        <h2 className="section-title is-wide" id="photos-heading">
+          Around the world with me
+        </h2>
 
       <section aria-label="תמונות מהטיולים" className="photo-strip">
         <div
@@ -368,29 +542,39 @@ function HomePage({
           ))}
         </div>
       </section>
-
-      <header className="page-heading">
-        <p className="eyebrow">סביב העולם</p>
-        <h2 className="countries-page-title">מדינות העולם</h2>
-        <p className="page-description">גלו את המדינות והיעדים שמחכים לכם</p>
-      </header>
+      </section>
 
       <section
         aria-labelledby="featured-recommendations-heading"
         className="featured-recommendations"
       >
-        <header className="featured-recommendations-heading">
-          <div>
-            <p className="eyebrow">המקומות שאהבתי</p>
-            <h2 id="featured-recommendations-heading">
-              המלצות מאחת שיודעת
-            </h2>
-            <p>המקומות שכדאי להכיר</p>
-          </div>
-          <Link className="all-recommendations-link" to="/recommendations">
-            לכל ההמלצות
-          </Link>
-        </header>
+        <h2 className="section-title" id="featured-recommendations-heading">
+          היעדים וההמלצות
+        </h2>
+        <p aria-label="היעדים שלנו" className="destination-strip" dir="rtl">
+          {destinationNavigationItems.map((item, index) => {
+            const itemPlaces = isDestinationGroup(item)
+              ? item.destinationIds.flatMap((id) => {
+                  const destination = destinations.find(
+                    (entry) => entry.id === id,
+                  )
+                  return destination ? [destination.name] : []
+                })
+              : item.places
+
+            return (
+              <span className="destination-strip-item" key={item.id}>
+                {index > 0 && <span aria-hidden="true">•</span>}
+                <Link to={`/destinations/${item.id}`}>
+                  {item.name}
+                  {itemPlaces && itemPlaces.length > 0 && (
+                    <> [{itemPlaces.join(', ')}]</>
+                  )}
+                </Link>
+              </span>
+            )
+          })}
+        </p>
         <div className="recommendation-list">
           {featuredRecommendations.map((item) => (
             <RecommendationCard
@@ -399,86 +583,18 @@ function HomePage({
             />
           ))}
         </div>
+        <Link className="all-recommendations-link" to="/recommendations">
+          לכל ההמלצות
+        </Link>
       </section>
 
       <div className="world-band">
       <section aria-labelledby="world-heading" className="world-section">
-        <svg
-          aria-labelledby="globe-title globe-description"
-          className="world-globe"
-          role="img"
-          viewBox="0 0 240 240"
-        >
-          <title id="globe-title">איור כדור הארץ</title>
-          <desc id="globe-description">
-            כדור ארץ כחול עם איורים של היבשות
-          </desc>
-          <circle cx="120" cy="120" r="104" fill="#e7f3fb" />
-          <circle
-            cx="120"
-            cy="120"
-            r="92"
-            fill="#7db9df"
-            stroke="#1769aa"
-            strokeWidth="3"
-          />
-          <clipPath id="globe-clip">
-            <circle cx="120" cy="120" r="92" />
-          </clipPath>
-          <g clipPath="url(#globe-clip)">
-            <g className="globe-land">
-              <path
-                d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
-                fill="#f7fbfd"
-              />
-              <path
-                d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
-                fill="#f7fbfd"
-              />
-              <path
-                d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
-                fill="#f7fbfd"
-              />
-              <path
-                d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
-                fill="#f7fbfd"
-              />
-              <g transform="translate(-184 0)">
-                <path
-                  d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
-                  fill="#f7fbfd"
-                />
-                <path
-                  d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
-                  fill="#f7fbfd"
-                />
-                <path
-                  d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
-                  fill="#f7fbfd"
-                />
-                <path
-                  d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
-                  fill="#f7fbfd"
-                />
-              </g>
-            </g>
-          </g>
-          <path
-            d="M47 125a74 74 0 0 0 116 59 92 92 0 0 1-116-59Z"
-            fill="#5ca7d2"
-            opacity=".55"
-          />
-          <path
-            d="M120 28a92 92 0 0 1 0 184M28 120h184M47 74a145 145 0 0 0 146 0M47 166a145 145 0 0 1 146 0"
-            fill="none"
-            stroke="#fff"
-            strokeOpacity=".62"
-            strokeWidth="2"
-          />
-        </svg>
-        <p className="eyebrow">גלו מקומות חדשים</p>
-        <h2 id="world-heading">סביב העולם</h2>
-        <p>כתבו שם של מדינה בחיפוש וגלו מה מחכה לכם בה</p>
+        <InteractiveGlobe />
+        <h2 className="section-title" id="world-heading">
+          סביב העולם
+        </h2>
+        <p>גררו את הכדור כדי לסובב אותו, וכתבו שם של מדינה בחיפוש</p>
       </section>
 
       <CountriesStatus
@@ -530,37 +646,21 @@ function HomePage({
           </div>
 
           {!isSearching ? (
-            <p className="countries-hint">
-              הקלידו שם של מדינה, בחרו יבשת או לחצו על "רק עם המלצות"
-            </p>
+            <>
+              <p className="countries-hint">
+                הקלידו שם של מדינה, בחרו יבשת או לחצו על "רק עם המלצות". ★ = מדינה שהייתי בה
+              </p>
+              <div className="country-grid" aria-label="מדינות לדוגמה">
+                {sampleCountries.map(renderCountryCard)}
+              </div>
+            </>
           ) : visibleCountries.length === 0 ? (
             <p className="empty-countries" role="status">
               לא נמצאו מדינות מתאימות. נסו לשנות את החיפוש או את הסינון.
             </p>
           ) : (
             <div className="country-grid" aria-label="רשימת מדינות">
-              {visibleCountries.map((country) => (
-                <Link
-                  className="country-card"
-                  key={country.cca3}
-                  to={`/countries/${country.cca3}`}
-                >
-                  <img
-                    alt={`דגל ${country.name}`}
-                    className="country-flag"
-                    height="48"
-                    loading="lazy"
-                    src={country.flagUrl}
-                    width="64"
-                  />
-                  <h3>{country.name}</h3>
-                  {recommendedCountryCodes.has(country.cca3) && (
-                    <span aria-label="יש המלצות אישיות" className="country-star">
-                      ★
-                    </span>
-                  )}
-                </Link>
-              ))}
+              {visibleCountries.map(renderCountryCard)}
             </div>
           )}
         </section>
