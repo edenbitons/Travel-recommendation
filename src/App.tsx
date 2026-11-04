@@ -264,13 +264,8 @@ function HomePage({
     })
   }, [countries])
 
-  const scrollToCountries = () => {
-    document.getElementById('countries')?.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ? 'auto'
-        : 'smooth',
-    })
-  }
+  const isSearching =
+    searchTerm.trim() !== '' || selectedRegion !== '' || onlyRecommended
 
   return (
     <main className="countries-page" dir="rtl">
@@ -406,6 +401,7 @@ function HomePage({
         </div>
       </section>
 
+      <div className="world-band">
       <section aria-labelledby="world-heading" className="world-section">
         <svg
           aria-labelledby="globe-title globe-description"
@@ -426,22 +422,47 @@ function HomePage({
             stroke="#1769aa"
             strokeWidth="3"
           />
-          <path
-            d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
-            fill="#f7fbfd"
-          />
-          <path
-            d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
-            fill="#f7fbfd"
-          />
-          <path
-            d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
-            fill="#f7fbfd"
-          />
-          <path
-            d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
-            fill="#f7fbfd"
-          />
+          <clipPath id="globe-clip">
+            <circle cx="120" cy="120" r="92" />
+          </clipPath>
+          <g clipPath="url(#globe-clip)">
+            <g className="globe-land">
+              <path
+                d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
+                fill="#f7fbfd"
+              />
+              <path
+                d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
+                fill="#f7fbfd"
+              />
+              <path
+                d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
+                fill="#f7fbfd"
+              />
+              <path
+                d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
+                fill="#f7fbfd"
+              />
+              <g transform="translate(-184 0)">
+                <path
+                  d="M66 54 88 47 103 58 99 72 112 78 106 93 91 94 83 108 69 102 62 87 49 82 53 67Z"
+                  fill="#f7fbfd"
+                />
+                <path
+                  d="m99 107 17 4 9 16-8 13-3 20-12 18-9-13 3-18-9-14 3-16Z"
+                  fill="#f7fbfd"
+                />
+                <path
+                  d="m113 55 18-10 21 5 7 11 19 3 12 13-8 12-15 1-9 12-17-2-8-12-17-1-8-13Z"
+                  fill="#f7fbfd"
+                />
+                <path
+                  d="m139 104 18-7 18 9 7 18-10 20-14 9-11-8-2-18-11-9Z"
+                  fill="#f7fbfd"
+                />
+              </g>
+            </g>
+          </g>
           <path
             d="M47 125a74 74 0 0 0 116 59 92 92 0 0 1-116-59Z"
             fill="#5ca7d2"
@@ -457,10 +478,7 @@ function HomePage({
         </svg>
         <p className="eyebrow">גלו מקומות חדשים</p>
         <h2 id="world-heading">סביב העולם</h2>
-        <p>בחרו מדינה וגלו מה מחכה לכם בה</p>
-        <button className="world-button" onClick={scrollToCountries} type="button">
-          לחצו למידע אודות כלל המדינות
-        </button>
+        <p>כתבו שם של מדינה בחיפוש וגלו מה מחכה לכם בה</p>
       </section>
 
       <CountriesStatus
@@ -472,13 +490,8 @@ function HomePage({
         <section
           className="countries-section"
           id="countries"
-          aria-labelledby="countries-heading"
+          aria-label="חיפוש מדינות"
         >
-          <header className="countries-heading">
-            <p className="eyebrow">בחרו את היעד הבא</p>
-            <h2 id="countries-heading">כל מדינות העולם</h2>
-            <p>חפשו מדינה או סננו לפי יבשת</p>
-          </header>
 
           <div className="country-filters">
             <label className="country-search">
@@ -516,7 +529,11 @@ function HomePage({
             </button>
           </div>
 
-          {visibleCountries.length === 0 ? (
+          {!isSearching ? (
+            <p className="countries-hint">
+              הקלידו שם של מדינה, בחרו יבשת או לחצו על "רק עם המלצות"
+            </p>
+          ) : visibleCountries.length === 0 ? (
             <p className="empty-countries" role="status">
               לא נמצאו מדינות מתאימות. נסו לשנות את החיפוש או את הסינון.
             </p>
@@ -548,6 +565,7 @@ function HomePage({
           )}
         </section>
       )}
+      </div>
     </main>
   )
 }
